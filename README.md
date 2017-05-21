@@ -1,6 +1,6 @@
-#Sistemas de inventario
+# Sistemas de inventario
 
-###Estructuras
+### Estructuras
     * **Persona**
         * DNI
         * Nombre
