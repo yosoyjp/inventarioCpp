@@ -23,6 +23,9 @@
     * Fecha
     * Empleado
     * Cliente
+* __Item__
+    * Codigo del producto
+    * Cantidad
 
 * __Clientes__ (Hereda de Persona)
     * DNI
