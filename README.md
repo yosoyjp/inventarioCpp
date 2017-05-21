@@ -1,7 +1,7 @@
 # Sistemas de inventario
 
 ### Estructuras
-    * **Persona**
+    *Persona
         * DNI
         * Nombre
         * Apellido
