@@ -1,44 +1,44 @@
 # Sistemas de inventario
 
 ### Estructuras
-    *Persona
-        * DNI
-        * Nombre
-        * Apellido
-        * Telefono
+* __Persona__
+    * DNI
+    * Nombre
+    * Apellido
+    * Telefono
 
-    * **Productos:**
-        * Nombre
-        * Precio
-        * Codigo
-        * Provedor
+* __Productos__
+    * Nombre
+    * Precio
+    * Codigo
+    * Provedor
 
-    * **Facturas**
-        * Codigo
-        * Productos (lista)
-        * Forma de pago
+* __Facturas__
+    * Codigo
+    * Productos (lista)
+    * Forma de pago
 
-    * **Detalles**
-        * Codigo
-        * Fecha
-        * Empleado
-        * Cliente
-    
-    * **Clientes** (Hereda de Persona)
-        * DNI
+* __Detalles__
+    * Codigo
+    * Fecha
+    * Empleado
+    * Cliente
 
-    * **Proveedor**
-        * Nombre
-        * NIT
-        * Telefono
+* __Clientes__ (Hereda de Persona)
+    * DNI
 
-    * **Inventario**
-        * Producto (Lista)
-        * Dinero
+* __Proveedor__
+    * Nombre
+    * NIT
+    * Telefono
 
-    * **Empleado** (Hereda de Persona)
-        * DNI
+* __Inventario__
+    * Producto (Lista)
+    * Dinero
 
-    * **Forma de pago**
-        * Forma
-        *Esta estructura trabaja a traves de constantes*
+* __Empleado__ (Hereda de Persona)
+    * DNI
+
+* __Forma de pago__
+    * Forma
+    * Esta estructura trabaja a traves de constantes*
