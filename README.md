@@ -42,6 +42,9 @@
 * __Empleado__ (Hereda de Persona)
     * DNI
 
-* __Forma de pago__
-    * Forma
-    * Esta estructura trabaja a traves de constantes*
+### Formas de pago
+* Se usan 4 constantes
+    * CHEQUE => "Cheque"
+    * TARJETA_CREDITO => "Tarjeta de credito"
+    * TARJETA_DEBITO => "Tarjeta debido"
+    * EFECTIVO => "Efectivo"

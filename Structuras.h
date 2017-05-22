@@ -17,6 +17,7 @@ typedef struct empleado *Empleado;
 typedef struct cliente *Cliente;
 typedef struct factura *Factura;
 typedef struct item *Item;
+typedef struct inventario *Inventario;
 
 StringVector Explode(const string & str, char separator ){
 	StringVector  result;
@@ -243,4 +244,50 @@ struct factura{
 
 struct cliente{
     int DNI;
+    cliente(){
+        DNI = 0;
+    }
+    int getDNI(){
+        return DNI;
+    }
+    bool setDNI(int doc){
+        if(doc != NULL){
+            DNI = doc;
+            return true;
+        }
+        return false;
+    }
+}
+
+struct empleado{
+    int DNI;
+    empleado(){
+        DNI = 0;
+    }
+    int getDNI(){
+        return DNI;
+    }
+    bool setDNI(int doc){
+        if(doc != NULL){
+            DNI = doc;
+            return true;
+        }
+        return false;
+    }
+}
+
+struct inventario{
+    Producto *productos;
+    int Dinero;
+    inventario(){
+        productos = NULL;
+        Dinero = 0;
+    }
+    bool addDinero(int cash){
+        if(cash != NULL && cash>0){
+            Dinero = Dinero+cash;
+            return true;
+        }
+        return false;
+    }
 }
