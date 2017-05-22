@@ -1,11 +1,32 @@
-#include <sstream>
 #include <iostream>
-#include <fstream>
-#include <iostream>
-#include "Structuras.h"
-
+#include <vector>
 
 using namespace std;
+
+//Declaramos nuevos tipos de datos a usar;
+typedef vector<string> StringVector;
+typedef struct persona *Persona;
+typedef struct producto *Producto;
+typedef struct proveedor *Proveedor;
+typedef struct detalles *Detalles;
+typedef struct empleado *Empleado;
+typedef struct cliente *Cliente;
+typedef struct factura *Factura;
+typedef struct item *Item;
+typedef struct inventario *Inventario;
+
+#include "Structuras.h"
+#include "Funciones.h"
+
+//Punteros globales
+Persona *listPersona;
+Producto *listProducto;
+Proveedor *listProveedor;
+Detalles *listDetalles;
+Empleado *listEmpleado;
+Cliente *listCliente;
+Factura *listFactura;
+Inventario *dataInventario;
 
 int main(){
 

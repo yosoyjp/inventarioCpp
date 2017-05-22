@@ -1,9 +1,6 @@
 #include <string.h>
-#include <vector>
 #include <stdlib.h>
 #include <iostream>
-
-using namespace std;
 
 const string CHEQUE = "Cheque";
 const string TARJETA_CREDITO = "Tarjeta de credito";
@@ -11,35 +8,6 @@ const string TARJETA_DEBITO = "Tarjeta debido";
 const string EFECTIVO = "Efectivo";
 
 const string cadena = "";
-
-typedef vector<string> StringVector;
-typedef struct persona *Persona;
-typedef struct producto *Producto;
-typedef struct proveedor *Proveedor;
-typedef struct detalles *Detalles;
-typedef struct empleado *Empleado;
-typedef struct cliente *Cliente;
-typedef struct factura *Factura;
-typedef struct item *Item;
-typedef struct inventario *Inventario;
-
-StringVector Explode(const string & str, char separator ){
-	StringVector  result;
-	size_t pos1 = 0;
-	size_t pos2 = 0;
-	while ( pos2 != str.npos ){
-	pos2 = str.find(separator, pos1);
-    if(pos2 != str.npos){
-    	if(pos2 > pos1){
-    		result.push_back( str.substr(pos1, pos2-pos1) );
-		}
-        pos1 = pos2+1;
-		}
-	}
-	result.push_back( str.substr(pos1, str.size()-pos1) );
-	return result;
-}
-
 
 struct persona{
     char Nombre[100];
@@ -233,6 +201,7 @@ struct item{
 };
 
 struct factura{
+    int Codigo;
     Detalles *detalle;
     char formaPago[20];
     Item *items;
@@ -243,7 +212,16 @@ struct factura{
         }
         return false;
     }
-
+    int getCodigo(){
+        return Codigo;
+    }
+    bool setCodigo(int c){
+        if(c != (int)NULL && c >= 0){
+            Codigo = c;
+            return true;
+        }
+        return false;
+    }
 };
 
 struct cliente{
@@ -281,7 +259,6 @@ struct empleado{
 };
 
 struct inventario{
-    Producto *productos;
     int Dinero;
     inventario(){
         productos = NULL;
