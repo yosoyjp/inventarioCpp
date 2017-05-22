@@ -3,10 +3,14 @@
 #include <stdlib.h>
 #include <iostream>
 
+using namespace std;
+
 const string CHEQUE = "Cheque";
 const string TARJETA_CREDITO = "Tarjeta de credito";
 const string TARJETA_DEBITO = "Tarjeta debido";
 const string EFECTIVO = "Efectivo";
+
+const string cadena = "";
 
 typedef vector<string> StringVector;
 typedef struct persona *Persona;
@@ -45,17 +49,17 @@ struct persona{
     Persona *sgte;
 
     persona(){
-        Nombre = "";
-        Apellido = "";
-        DNI = NULL;
-        Telefono = "";
+        strcpy(Nombre, cadena.c_str());
+        strcpy(Apellido, cadena.c_str());
+        DNI = (int)NULL;
+        strcpy(Telefono, cadena.c_str());
     }
     string getNombre(){
         return (string)Nombre;
     }
     bool setNombre(string name){
         if(!name.empty()){
-            Nombre = name.c_str();
+            strcpy(Nombre, name.c_str());
             return true;
         }
         return false;
@@ -65,7 +69,7 @@ struct persona{
     }
     bool setApellido(string lastName){
         if(!lastName.empty()){
-            Apellido = lastName.c_str();
+            strcpy(Apellido, lastName.c_str());
             return true;
         }
         return false;
@@ -74,7 +78,7 @@ struct persona{
         return DNI;
     }
     bool setDNI(int doc){
-        if(doc != NULL){
+        if(doc != (int)NULL){
             DNI = doc;
             return true;
         }
@@ -85,7 +89,7 @@ struct persona{
     }
     bool setTelefono(string tel){
         if(!tel.empty()){
-            Telefono = tel;
+            strcpy(Telefono, tel.c_str());
             return true;
         }
         return false;
@@ -103,7 +107,7 @@ struct proveedor{
     }
     bool setNombre(string name){
         if(!name.empty()){
-            Nombre = name.c_str();
+            strcpy(Nombre, name.c_str());
             return true;
         }
         return false;
@@ -113,7 +117,7 @@ struct proveedor{
     }
     bool setTelefono(string tel){
         if(!tel.empty()){
-            Telefono = tel;
+            strcpy(Telefono, tel.c_str());
             return true;
         }
         return false;
@@ -123,7 +127,7 @@ struct proveedor{
     }
     bool setNIT(string n){
         if(!n.empty()){
-            NIT = n;
+            strcpy(NIT, n.c_str());
             return true;
         }
         return false;
@@ -142,7 +146,7 @@ struct producto{
     }
     bool setNombre(string name){
         if(!name.empty()){
-            Nombre = name.c_str();
+            strcpy(Nombre, name.c_str());
             return true;
         }
         return false;
@@ -151,7 +155,7 @@ struct producto{
         return Codigo;
     }
     bool setCodigo(int c){
-        if(c != NULL && c >= 0){
+        if(c != (int)NULL && c >= 0){
             Codigo = c;
             return true;
         }
@@ -161,7 +165,7 @@ struct producto{
         return Precio;
     }
     bool setPrecio(int c){
-        if(c != NULL && c => 0){
+        if(c != (int)NULL && c >= 0){
             Precio = c;
             return true;
         }
@@ -180,7 +184,7 @@ struct detalles{
         return Codigo;
     }
     bool setCodigo(int c){
-        if(c != NULL && c => 0){
+        if(c != (int)NULL && c >= 0){
             Codigo = c;
             return true;
         }
@@ -191,7 +195,7 @@ struct detalles{
     }
     bool setFecha(string f){
         if(!f.empty()){
-            Fecha = f.c_str();
+            strcpy(Fecha, f.c_str());
             return true;
         }
         return false;
@@ -207,7 +211,7 @@ struct item{
         codigoPoducto = 0;
     }
     bool setCodigoProducto(int c){
-        if(c != NULL && c >= 0){
+        if(c != (int)NULL && c >= 0){
             codigoPoducto = c;
             return true;
         }
@@ -217,7 +221,7 @@ struct item{
         return codigoPoducto;
     }
     bool setCantidad(int c){
-        if(c != NULL && c > 0){
+        if(c != (int)NULL && c > 0){
             cantidad = c;
             return true;
         }
@@ -226,15 +230,15 @@ struct item{
     int getCantidad(){
         return cantidad;
     }
-}
+};
 
 struct factura{
     Detalles *detalle;
-    string formaPago;
+    char formaPago[20];
     Item *items;
     bool setFormaDePago(string f){
         if(!f.empty() && (f == CHEQUE || f==TARJETA_CREDITO || f==TARJETA_DEBITO || f==EFECTIVO)){
-            formaPago = f;
+            strcpy(formaPago, f.c_str());
             return true;
         }
         return false;
@@ -251,13 +255,13 @@ struct cliente{
         return DNI;
     }
     bool setDNI(int doc){
-        if(doc != NULL){
+        if(doc != (int)NULL){
             DNI = doc;
             return true;
         }
         return false;
     }
-}
+};
 
 struct empleado{
     int DNI;
@@ -268,13 +272,13 @@ struct empleado{
         return DNI;
     }
     bool setDNI(int doc){
-        if(doc != NULL){
+        if(doc != (int)NULL){
             DNI = doc;
             return true;
         }
         return false;
     }
-}
+};
 
 struct inventario{
     Producto *productos;
@@ -284,10 +288,10 @@ struct inventario{
         Dinero = 0;
     }
     bool addDinero(int cash){
-        if(cash != NULL && cash>0){
+        if(cash != (int)NULL && cash>0){
             Dinero = Dinero+cash;
             return true;
         }
         return false;
     }
-}
+};
