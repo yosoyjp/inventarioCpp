@@ -261,7 +261,6 @@ struct empleado{
 struct inventario{
     int Dinero;
     inventario(){
-        productos = NULL;
         Dinero = 0;
     }
     bool addDinero(int cash){

@@ -15,9 +15,6 @@ typedef struct factura *Factura;
 typedef struct item *Item;
 typedef struct inventario *Inventario;
 
-#include "Structuras.h"
-#include "Funciones.h"
-
 //Punteros globales
 Persona *listPersona;
 Producto *listProducto;
@@ -27,6 +24,10 @@ Empleado *listEmpleado;
 Cliente *listCliente;
 Factura *listFactura;
 Inventario *dataInventario;
+
+#include "Structuras.h"
+#include "Funciones.h"
+
 
 int main(){
 
