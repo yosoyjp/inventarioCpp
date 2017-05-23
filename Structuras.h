@@ -14,7 +14,7 @@ struct persona{
     char Apellido[100];
     int DNI;
     char Telefono[20];
-    Persona *sgte;
+    persona *sgte;
 
     persona(){
         strcpy(Nombre, cadena.c_str());
@@ -65,7 +65,7 @@ struct persona{
 };
 
 struct proveedor{
-    Proveedor *sgte;
+    proveedor *sgte;
     char Nombre[100];
     char NIT[20];
     char Telefono[20];
@@ -106,8 +106,8 @@ struct producto{
     char Nombre[100];
     int Codigo;
     int Precio;
-    Proveedor *proveedor;
-    Producto *sgte;
+    proveedor *provee;
+    producto *sgte;
 
     string getNombre(){
         return (string)Nombre;
@@ -142,18 +142,17 @@ struct producto{
 };
 
 struct detalles{
-    int Codigo;
+    int codigoFactura;
     char Fecha[100];
-    Empleado *empleado;
-    Cliente *cliente;
-    Detalles *sgte;
+    empleado *emple;
+    cliente *clie;
 
     int getCodigo(){
-        return Codigo;
+        return codigoFactura;
     }
     bool setCodigo(int c){
         if(c != (int)NULL && c >= 0){
-            Codigo = c;
+            codigoFactura = c;
             return true;
         }
         return false;
@@ -174,9 +173,21 @@ struct detalles{
 struct item{
     int codigoPoducto;
     int cantidad;
+    int codigoFactura;
+    item *sgte;
     item(){
         cantidad = 0;
         codigoPoducto = 0;
+    }
+    bool setCodigoFactura(int c){
+        if(c != (int)NULL && c >= 0){
+            codigoFactura = c;
+            return true;
+        }
+        return false;
+    }
+    int getCodigoFactura(){
+        return codigoFactura;
     }
     bool setCodigoProducto(int c){
         if(c != (int)NULL && c >= 0){
@@ -202,9 +213,25 @@ struct item{
 
 struct factura{
     int Codigo;
-    Detalles *detalle;
     char formaPago[20];
-    Item *items;
+    item *it;
+    detalles *deta;
+    factura *sgte;
+
+    // METODOS
+
+    factura *getSiguiente(){
+        return sgte;
+    }
+    bool setSiguiente(factura *f){
+        sgte = f;
+    }
+    detalles *getDetalle(){
+        return deta;
+    }
+    bool setDetalles(detalles *d){
+        deta = d;
+    }
     bool setFormaDePago(string f){
         if(!f.empty() && (f == CHEQUE || f==TARJETA_CREDITO || f==TARJETA_DEBITO || f==EFECTIVO)){
             strcpy(formaPago, f.c_str());

@@ -90,6 +90,36 @@ StringVector loadDatas(const char* nameFile){
     }
 }
 
-void loadDataPersonas(){
-    StringVector registros = loadDatas(nameFilePersonas);
+Persona crearPersona(){
+    return (struct persona *)malloc(sizeof(struct persona));
 }
+
+
+Persona parsearRegPersona(string r){
+    StringVector rv = Explode(r, '@');
+    Persona p = crearPersona();
+    p->setNombre(rv[0]);
+    p->setApellido(rv[1]);
+    p->setDNI(atoi(rv[2].c_str()));
+    p->setTelefono(rv[3]);
+    return p;
+}
+
+void loadDataPersonas(){
+    StringVector registros = loadDatas(nameFilePersonas); //Cargamos las lineas del archivo
+    Persona peoples = listPersona;
+
+    //Guardamos los datos en la lista de la estructura personas;
+    for(int i = 0; i < registros.size(); i++ ){
+        if(listPersona == NULL){ //Si esta vacia
+            listPersona = parsearRegPersona(registros[i]);
+        }else{
+            peoples = listPersona;
+            while(peoples->sgte != NULL){
+                peoples = peoples->sgte;
+            }
+            peoples->sgte = parsearRegPersona(registro[i]); //Se añade al final de la lista
+        }
+    }
+}
+

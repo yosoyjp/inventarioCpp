@@ -16,20 +16,20 @@ typedef struct item *Item;
 typedef struct inventario *Inventario;
 
 //Punteros globales
-Persona *listPersona;
-Producto *listProducto;
-Proveedor *listProveedor;
-Detalles *listDetalles;
-Empleado *listEmpleado;
-Cliente *listCliente;
-Factura *listFactura;
-Inventario *dataInventario;
+Persona listPersona;
+Producto listProducto;
+Proveedor listProveedor;
+Detalles listDetalles;
+Empleado listEmpleado;
+Cliente listCliente;
+Factura listFactura;
+Inventario dataInventario;
 
 #include "Structuras.h"
 #include "Funciones.h"
 
 
 int main(){
-
+    // loadDataPersonas();
     return 0;
 }
