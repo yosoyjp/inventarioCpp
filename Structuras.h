@@ -62,6 +62,12 @@ struct persona{
         }
         return false;
     }
+    void setSiguiente(persona *f){
+        sgte=f;
+    }
+    persona *getSiguiente(){
+        return sgte;
+    }
 };
 
 struct proveedor{
@@ -69,7 +75,9 @@ struct proveedor{
     char Nombre[100];
     char NIT[20];
     char Telefono[20];
+    producto *prodc;
 
+    // METODOS
     string getNombre(){
         return (string)Nombre;
     }
@@ -100,13 +108,25 @@ struct proveedor{
         }
         return false;
     }
+    void setSiguiente(proveedor *f){
+        sgte=f;
+    }
+    proveedor *getSiguiente(){
+        return sgte;
+    }
+    void setProducto(producto *f){
+        prodc=f;
+    }
+    producto *getProducto(){
+        return prodc;
+    }
 };
 
 struct producto{
     char Nombre[100];
     int Codigo;
     int Precio;
-    proveedor *provee;
+    char NITProveedor[20];
     producto *sgte;
 
     string getNombre(){
@@ -139,6 +159,22 @@ struct producto{
         }
         return false;
     }
+    bool setNITProveedor(string nit){
+        if(!nit.empty()){
+            strcpy(NITProveedor, nit.c_str());
+            return true;
+        }
+        return false;
+    }
+    string getNITProveedor(){
+        return (string)NITProveedor;
+    }
+    void setSiguiente(producto *f){
+        sgte = f;
+    }
+    producto *getSiguiente(){
+        return sgte;
+    }
 };
 
 struct detalles{
@@ -167,7 +203,24 @@ struct detalles{
         }
         return false;
     }
-
+    bool setEmpleado(empleado *e){
+        if(e != NULL){
+            emple = e;
+            return true;
+        }
+    }
+    empleado *getEmpleado(){
+        return emple;
+    }
+    bool setCliente(cliente *e){
+        if(e != NULL){
+            clie = e;
+            return true;
+        }
+    }
+    cliente *getCliente(){
+        return clie;
+    }
 };
 
 struct item{
@@ -209,6 +262,12 @@ struct item{
     int getCantidad(){
         return cantidad;
     }
+    void setSiguiente(item *i){
+        sgte = i;
+    }
+    item *getItem(){
+        return sgte;
+    }
 };
 
 struct factura{
@@ -219,7 +278,12 @@ struct factura{
     factura *sgte;
 
     // METODOS
-
+    void setItem(item *i){
+        it = i;
+    }
+    item *getItem(){
+        return it;
+    }
     factura *getSiguiente(){
         return sgte;
     }

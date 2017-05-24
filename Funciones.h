@@ -94,7 +94,6 @@ Persona crearPersona(){
     return (struct persona *)malloc(sizeof(struct persona));
 }
 
-
 Persona parsearRegPersona(string r){
     StringVector rv = Explode(r, '@');
     Persona p = crearPersona();
@@ -123,3 +122,75 @@ void loadDataPersonas(){
     }
 }
 
+Producto crearProducto(){
+    return (struct producto *)malloc(sizeof(struct producto));
+}
+
+Producto parsearRegProducto(string r){
+    StringVector rv = Explode(r, '@');
+    Producto p = crearProducto();
+    p->setNombre( rv[0] );
+    p->setCodigo( atoi( rv[1].c_str() ) );
+    p->setPrecio( atoi( rv[2].c_str() ) );
+    p->setNITProveedor( rv[4] );
+    return p;
+}
+
+Producto loadDataProductos(string NIT){
+    StringVector registros = loadDatas(nameFileProductos);
+    Producto pro;
+    Producto aux;
+
+    //Guardamos los datos en la lista de la estructura producto, la cual se va a retornar;
+    for(int i = 0; i < registros.size(); i++ ){
+        if(pro == NULL){ //Si esta vacia
+            /* Validamos si es un producto de este proveedor */
+            if(parsearRegProducto(registros[i])->getNITProveedor() == NIT){
+                pro = parsearRegProducto(registros[i]);
+            }
+        }else{
+            aux = pro;
+            while(aux->sgte != NULL){
+                aux = aux->sgte;
+            }
+            /* Validamos si es un producto de este proveedor */
+            if(parsearRegProducto(registros[i])->getNITProveedor() == NIT){
+                aux->sgte = parsearRegProducto(registro[i]); //Se añade al final de la lista
+            }
+        }
+    }
+    return pro;
+}
+
+Proveedor crearProveedor(){
+    return (struct proveedor *)malloc(sizeof(struct persona));
+}
+
+Proveedor parsearRegProveedor(string r){
+    StringVector rv = Explode(r, '@');
+    Proveedor p = crearProveedor();
+    p->setNombre(rv[0]);
+    p->setNIT(rv[1]);
+    p->setTelefono(rv[2]);
+    //Cargar productos
+    p->setProducto(loadDataProductos( p->getNIT() ) );
+    return p;
+}
+
+void loadDataProveedores(){
+    StringVector registros = loadDatas(nameFileProveedores);
+    Proveedor pro = listProveedor;
+
+    //Guardamos los datos en la lista de la estructura proveedor;
+    for(int i = 0; i < registros.size(); i++ ){
+        if(listProveedor == NULL){ //Si esta vacia
+            listProveedor = parsearRegProveedor(registros[i]);
+        }else{
+            pro = listProveedor;
+            while(pro->sgte != NULL){
+                pro = pro->sgte;
+            }
+            pro->sgte = parsearRegProveedor(registro[i]); //Se añade al final de la lista
+        }
+    }
+}
