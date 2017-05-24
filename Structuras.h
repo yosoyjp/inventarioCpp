@@ -183,10 +183,10 @@ struct detalles{
     empleado *emple;
     cliente *clie;
 
-    int getCodigo(){
+    int getCodigoFactura(){
         return codigoFactura;
     }
-    bool setCodigo(int c){
+    bool setCodigoFactura(int c){
         if(c != (int)NULL && c >= 0){
             codigoFactura = c;
             return true;
@@ -265,7 +265,7 @@ struct item{
     void setSiguiente(item *i){
         sgte = i;
     }
-    item *getItem(){
+    item *getSiguiente(){
         return sgte;
     }
 };
@@ -317,6 +317,7 @@ struct factura{
 
 struct cliente{
     int DNI;
+    cliente *sgte;
     cliente(){
         DNI = 0;
     }
@@ -330,10 +331,17 @@ struct cliente{
         }
         return false;
     }
+    cliente *getSiguiente(){
+        return sgte;
+    }
+    bool setSiguiente(cliente *f){
+        sgte = f;
+    }
 };
 
 struct empleado{
     int DNI;
+    empleado *sgte;
     empleado(){
         DNI = 0;
     }
@@ -346,6 +354,12 @@ struct empleado{
             return true;
         }
         return false;
+    }
+    empleado *getSiguiente(){
+        return sgte;
+    }
+    bool setSiguiente(empleado *f){
+        sgte = f;
     }
 };
 

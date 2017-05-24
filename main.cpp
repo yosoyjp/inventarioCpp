@@ -17,9 +17,9 @@ typedef struct inventario *Inventario;
 
 //Punteros globales
 Persona listPersona;
-Producto listProducto;
+// Producto listProducto;
 Proveedor listProveedor;
-Detalles listDetalles;
+// Detalles listDetalles;
 Empleado listEmpleado;
 Cliente listCliente;
 Factura listFactura;
@@ -30,6 +30,7 @@ Inventario dataInventario;
 
 
 int main(){
+    cout<<"Cargando los datos"<<endl;
     // loadDataPersonas();
     return 0;
 }

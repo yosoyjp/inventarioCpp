@@ -18,7 +18,7 @@ const char* nameFileProductos = "./Data/productos.txt";
         Codigo@FormaDePago
     },
     Detalles:{
-        Codigo@Fecha@DNICliente@DNIEmpleado
+        CodigoFactura@Fecha@DNICliente@DNIEmpleado
     },
     Empleados:{
         DNI
@@ -33,7 +33,7 @@ const char* nameFileProductos = "./Data/productos.txt";
         Nombre@Codigo@Precio@NITProveedor
     }
     Item:{
-        CodigoProducto@Cantidad
+        codigoFactura@CodigoProducto@Cantidad
     }
 */
 
@@ -59,7 +59,6 @@ StringVector Explode(const string & str, char separator ){
 	result.push_back( str.substr(pos1, str.size()-pos1) );
 	return result;
 }
-
 
 StringVector loadDatas(const char* nameFile){
     try{
@@ -163,7 +162,7 @@ Producto loadDataProductos(string NIT){
 }
 
 Proveedor crearProveedor(){
-    return (struct proveedor *)malloc(sizeof(struct persona));
+    return (struct proveedor *)malloc(sizeof(struct proveedor));
 }
 
 Proveedor parsearRegProveedor(string r){
@@ -191,6 +190,142 @@ void loadDataProveedores(){
                 pro = pro->sgte;
             }
             pro->sgte = parsearRegProveedor(registro[i]); //Se añade al final de la lista
+        }
+    }
+}
+
+Cliente crearCliente(){
+    return (struct cliente *)malloc(sizeof(struct cliente));
+}
+
+Cliente parsearRegCliente(string r){
+    StringVector rv = Explode(r, '@');
+    Cliente c = crearCliente();
+    c->setDNI( atoi( rv[0].c_str() ) );
+    return c;
+}
+
+void loadDataClientes(){
+    StringVector registros = loadDatas(nameFileClientes);
+    Cliente cli = listCliente;
+
+    //Guardamos los datos en la lista de la estructura cliente;
+    for(int i = 0; i < registros.size(); i++ ){
+        if(listCliente == NULL){ //Si esta vacia
+            listCliente = parsearRegCliente(registros[i]);
+        }else{
+            cli = listCliente;
+            while(cli->sgte != NULL){
+                cli = cli->sgte;
+            }
+            cli->sgte = parsearRegCliente(registro[i]); //Se añade al final de la lista
+        }
+    }
+}
+
+Empleado crearEmpleado(){
+    return (struct empleado *)malloc(sizeof(struct empleado));
+}
+
+Empleado parsearRegEmpleado(string r){
+    StringVector rv = Explode(r, '@');
+    Empleado e = crearEmpleado();
+    e->setDNI( atoi( rv[0].c_str() ) );
+    return e;
+}
+
+void loadDataEmpleados(){
+    StringVector registros = loadDatas(nameFileEmpleados);
+    Empleado emp = listEmpleado;
+
+    //Guardamos los datos en la lista de la estructura empleado;
+    for(int i = 0; i < registros.size(); i++ ){
+        if(listEmpleado == NULL){ //Si esta vacia
+            listEmpleado = parsearRegEmpleado(registros[i]);
+        }else{
+            emp = listEmpleado;
+            while(emp->sgte != NULL){
+                emp = emp->sgte;
+            }
+            emp->setSiguiente(parsearRegEmpleado(registro[i])); //Se añade al final de la lista
+        }
+    }
+}
+
+Item crearItem(){
+    return (struct item *)malloc(sizeof(struct item));
+}
+
+Item parsearRegItem(string r){
+    StringVector rv = Explode(r, '@');
+    Item i = crearItem();
+
+    i->setCodigoFactura(  atoi(rv[0].c_str() ) );
+    i->setCodigoProducto( atoi(rv[1].c_str() ) );
+    i->setCantidad( atoi(rv[2].c_str() ) );
+    return i;
+}
+
+Item loadDataItems(int codigoFactura){
+    StringVector registros = loadDatas(nameFileItems);
+    Item it;
+    Item aux;
+
+    for(int i = 0; i < registros.size(); i++ ){
+        if(it == NULL){ //Si esta vacia
+            it = parsearRegItem(registros[i]);
+        }else{
+            aux = it;
+            while(aux->getSiguiente() != NULL){
+                aux = aux->getSiguiente();
+            }
+            aux->setSiguiente(parsearRegItem(registro[i])); //Se añade al final de la lista
+        }
+    }
+    return it;
+}
+
+Detalles crearDetalle(){
+    return (struct detalles *)malloc(sizeof(struct detalles));    
+}
+
+Detalles parsearRegDetalles(string r){
+    StringVector rv = Explode(r, '@');
+    Detalles det = crearDetalle();
+            CodigoFactura@Fecha@DNICliente@DNIEmpleado
+    det->setCodigoFactura( atoi(rv[0].c_str()) );
+}
+
+Factura crearFactura(){
+    return (struct factura *)malloc(sizeof(struct factura));
+}
+
+Factura parsearRegFactura(string r){
+    StringVector rv = Explode(r, '@');
+    Factura f = crearFactura();
+
+    f->setCodigo( atoi(rv[0].c_str() ) );
+    f->setFormaDePago(rv[1]);
+    //Cargar item
+    f->setItem( loadDataItems( f->getCodigo() ) );
+    //Cargar detalles
+
+    return f;
+}
+
+void loadDataFacturas(){
+    StringVector registros = loadDatas(nameFileFacturas);
+    Factura fac = listFactura;
+
+    for(int i = 0; i < registros.size(); i++ ){
+        if(listFactura == NULL){ //Si esta vacia
+            listFactura = parsearRegFactura(registros[i]);
+        }else{
+            fac = listFactura;
+            while(fac->getSiguiente() != NULL){
+                fac = fac->getSiguiente();
+            }
+            fac->setSiguiente(parsearRegFactura(registro[i])); //Se añade al final de la lista
         }
     }
 }
