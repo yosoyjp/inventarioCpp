@@ -15,11 +15,8 @@ typedef struct factura *Factura;
 typedef struct item *Item;
 typedef struct inventario *Inventario;
 
-//Punteros globales
 Persona listPersona;
-// Producto listProducto;
 Proveedor listProveedor;
-// Detalles listDetalles;
 Empleado listEmpleado;
 Cliente listCliente;
 Factura listFactura;
@@ -41,7 +38,9 @@ void CargarTodosDatos(){
 #include "Menus.h"
 
 int main(){
-	 CargarTodosDatos();
-	 Menu();
+	CargarTodosDatos();
+	cout<<listProveedor->getNombre()<<endl;
+	// MenuPrincipal();
+	 
 	 return 0;
 }

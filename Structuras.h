@@ -130,7 +130,7 @@ struct producto{
     producto *sgte;
 
     string getNombre(){
-        return (string)Nombre;
+        return string(Nombre);
     }
     bool setNombre(string name){
         if(!name.empty()){

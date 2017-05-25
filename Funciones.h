@@ -45,7 +45,7 @@ const char* nameFileInventario = "./Data/inventario.txt";
 ifstream fileLectura;
 char cad[250];
 string cadenaParser;
-StringVector registro; //Aqui cargamos los campos de el registro
+// StringVector registro; //Aqui cargamos los campos de el registro
 
 StringVector Explode(const string & str, char separator ){
 	StringVector  result;
@@ -82,10 +82,11 @@ StringVector loadDatas(const char* nameFile){
             fileLectura.getline(cad, 250); //Leemos linea por linea el archivo.
             cadenaParser = (string)cad; //Lo convertimos en string
             if(!cadenaParser.empty()){ //Si la cadena no esta vacia
+                cout<<cadenaParser<<endl;
                 lineas.push_back(cadenaParser); //La incluimos en el vector de string
             }
         }while(!fileLectura.eof()); //Mientras que no lleguemos el fin de el archivo
-        
+        fileLectura.close();
         return lineas;
     }catch(int e){
         cout<<endl<<"ERROR: #"<<e<<endl<<endl;
@@ -112,10 +113,10 @@ void loadDataInvetario(){
     while(!registros.empty()){
         
         dataInventario = parsearRegInventario(registros[0]);
-        
+        cout<<"*****************************HERE INVENTARIO**"<<endl;
         return;
     }
-    cout<<"  **HERE**  "<<endl;
+    cout<<"*****************************************HERE INVENTARIO**"<<endl;
     dataInventario = crearInventario(); //Si no habia datos, solo se crea el inventario con los datos iniciales.
 }
 
@@ -137,6 +138,7 @@ void loadDataPersonas(){
     StringVector registros = loadDatas(nameFilePersonas); //Cargamos las lineas del archivo
     Persona peoples = listPersona;
 
+    
     //Guardamos los datos en la lista de la estructura personas;
     for(int i = 0; i < registros.size(); i++ ){
         if(listPersona == NULL){ //Si esta vacia
@@ -146,9 +148,10 @@ void loadDataPersonas(){
             while(peoples->sgte != NULL){
                 peoples = peoples->sgte;
             }
-            peoples->sgte = parsearRegPersona(registro[i]); //Se añade al final de la lista
+            peoples->sgte = parsearRegPersona(registros[i]); //Se añade al final de la lista
         }
     }
+    cout<<"************************************HERE PERSONA**"<<endl;
 }
 
 Producto crearProducto(){
@@ -161,34 +164,42 @@ Producto parsearRegProducto(string r){
     p->setNombre( rv[0] );
     p->setCodigo( atoi( rv[1].c_str() ) );
     p->setPrecio( atoi( rv[2].c_str() ) );
-    p->setNITProveedor( rv[4] );
+    p->setNITProveedor( rv[3] );
     return p;
 }
 
 Producto loadDataProductos(string NIT){
     StringVector registros = loadDatas(nameFileProductos);
-    Producto pro;
+    Producto prod;
     Producto aux;
 
     //Guardamos los datos en la lista de la estructura producto, la cual se va a retornar;
     for(int i = 0; i < registros.size(); i++ ){
-        if(pro == NULL){ //Si esta vacia
+        
+        if(i == 0){ //Si esta vacia
             /* Validamos si es un producto de este proveedor */
-            if(parsearRegProducto(registros[i])->getNITProveedor() == NIT){
-                pro = parsearRegProducto(registros[i]);
+            string g = parsearRegProducto(registros[i])->getNITProveedor();
+            if(g == NIT){
+                prod = parsearRegProducto(registros[i]);
             }
         }else{
-            aux = pro;
-            while(aux->sgte != NULL){
-                aux = aux->sgte;
+            cout<<prod->getNombre()<<endl;
+            aux = prod;
+            while(aux->getSiguiente() != NULL){
+                cout<<aux->getSiguiente();
+                aux = aux->getSiguiente();
+                
+                cout<<"************************************HERE PROfdsfDUCTO**"<<endl;    
             }
+            cout<<"************************************HERE PROaaaaaDUCTO**"<<endl;    
             /* Validamos si es un producto de este proveedor */
-            if(parsearRegProducto(registros[i])->getNITProveedor() == NIT){
-                aux->sgte = parsearRegProducto(registro[i]); //Se añade al final de la lista
+            string g = parsearRegProducto(registros[i])->getNITProveedor();
+            if(g == NIT){
+                aux->sgte = parsearRegProducto(registros[i]); //Se añade al final de la lista
             }
         }
     }
-    return pro;
+    return prod;
 }
 
 Proveedor crearProveedor(){
@@ -209,9 +220,13 @@ Proveedor parsearRegProveedor(string r){
 void loadDataProveedores(){
     StringVector registros = loadDatas(nameFileProveedores);
     Proveedor pro = listProveedor;
-
+    
+    if(!registros.empty()){
+        cout<<"**HERE PROVEEDOR**"<<endl;
+    }
     //Guardamos los datos en la lista de la estructura proveedor;
     for(int i = 0; i < registros.size(); i++ ){
+        
         if(listProveedor == NULL){ //Si esta vacia
             listProveedor = parsearRegProveedor(registros[i]);
         }else{
@@ -219,7 +234,7 @@ void loadDataProveedores(){
             while(pro->sgte != NULL){
                 pro = pro->sgte;
             }
-            pro->sgte = parsearRegProveedor(registro[i]); //Se añade al final de la lista
+            pro->sgte = parsearRegProveedor(registros[i]); //Se añade al final de la lista
         }
     }
 }
@@ -238,7 +253,7 @@ Cliente parsearRegCliente(string r){
 void loadDataClientes(){
     StringVector registros = loadDatas(nameFileClientes);
     Cliente cli = listCliente;
-
+    cout<<"**HERE ADSDASD**"<<endl;
     //Guardamos los datos en la lista de la estructura cliente;
     for(int i = 0; i < registros.size(); i++ ){
         if(listCliente == NULL){ //Si esta vacia
@@ -248,9 +263,10 @@ void loadDataClientes(){
             while(cli->sgte != NULL){
                 cli = cli->sgte;
             }
-            cli->sgte = parsearRegCliente(registro[i]); //Se añade al final de la lista
+            cli->sgte = parsearRegCliente(registros[i]); //Se añade al final de la lista
         }
     }
+    cout<<"******************************* HERE CLIENTE**"<<endl;
 }
 
 Empleado crearEmpleado(){
@@ -277,7 +293,7 @@ void loadDataEmpleados(){
             while(emp->sgte != NULL){
                 emp = emp->sgte;
             }
-            emp->setSiguiente(parsearRegEmpleado(registro[i])); //Se añade al final de la lista
+            emp->setSiguiente(parsearRegEmpleado(registros[i])); //Se añade al final de la lista
         }
     }
 }
@@ -310,7 +326,7 @@ Item loadDataItems(int codigoFactura){
                 while(aux->getSiguiente() != NULL){
                     aux = aux->getSiguiente();
                 }
-                aux->setSiguiente(parsearRegItem(registro[i])); //Se añade al final de la lista
+                aux->setSiguiente(parsearRegItem(registros[i])); //Se añade al final de la lista
             }
         }
     }
@@ -373,7 +389,7 @@ Detalles loadDataDetalles(int codigoFactura){
                 while(aux->getSiguiente() != NULL){
                     aux = aux->getSiguiente();
                 }
-                aux->setSiguiente(parsearRegDetalles(registro[i])); //Se añade al final de la lista
+                aux->setSiguiente(parsearRegDetalles(registros[i])); //Se añade al final de la lista
             }
         }
     }
@@ -409,7 +425,17 @@ void loadDataFacturas(){
             while(fac->getSiguiente() != NULL){
                 fac = fac->getSiguiente();
             }
-            fac->setSiguiente(parsearRegFactura(registro[i])); //Se añade al final de la lista
+            fac->setSiguiente(parsearRegFactura(registros[i])); //Se añade al final de la lista
         }
+    }
+}
+
+void MostrarTodosProductos(){
+    Proveedor aux = listProveedor;
+    Producto auxP;
+    while(aux){
+        auxP = aux->getProducto();
+        cout<<"Nombre: "<<aux->getNombre()<<endl;
+        aux = aux->getSiguiente();
     }
 }
