@@ -382,4 +382,7 @@ struct inventario{
         }
         return false;
     }
+    int getDinero(){
+        return Dinero;
+    }
 };

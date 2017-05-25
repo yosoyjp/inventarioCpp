@@ -85,7 +85,7 @@ StringVector loadDatas(const char* nameFile){
                 lineas.push_back(cadenaParser); //La incluimos en el vector de string
             }
         }while(!fileLectura.eof()); //Mientras que no lleguemos el fin de el archivo
-
+        
         return lineas;
     }catch(int e){
         cout<<endl<<"ERROR: #"<<e<<endl<<endl;
@@ -105,12 +105,18 @@ Inventario parsearRegInventario(string r){
 }
 
 void loadDataInvetario(){
-    StringVector registros = loadDatas(nameFilePersonas); //Cargamos las lineas del archivo
+
+    StringVector registros = loadDatas(nameFileInventario); //Cargamos las lineas del archivo
     //Si no esta vacio;
-    while(registros.empty()){
-        dataInventario = parsearRegInventario(registro[0]);
+    
+    while(!registros.empty()){
+        
+        dataInventario = parsearRegInventario(registros[0]);
+        
         return;
     }
+    cout<<"  **HERE**  "<<endl;
+    dataInventario = crearInventario(); //Si no habia datos, solo se crea el inventario con los datos iniciales.
 }
 
 Persona crearPersona(){

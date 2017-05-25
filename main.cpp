@@ -31,6 +31,7 @@ Inventario dataInventario;
 
 int main(){
     cout<<"Cargando los datos"<<endl;
-    // loadDataPersonas();
+    loadDataInvetario();
+    cout<<"Dinero: "<< dataInventario->getDinero()<<endl;
     return 0;
 }
