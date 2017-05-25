@@ -9,6 +9,7 @@ const char* nameFileEmpleados = "./Data/empleados.txt";
 const char* nameFileProveedores = "./Data/proveedores.txt";
 const char* nameFileItems = "./Data/items.txt";
 const char* nameFileProductos = "./Data/productos.txt";
+const char* nameFileInventario = "./Data/inventario.txt";
 
 /* Ejemplos de registro en los archivos
     Personas: {
@@ -34,6 +35,9 @@ const char* nameFileProductos = "./Data/productos.txt";
     }
     Item:{
         codigoFactura@CodigoProducto@Cantidad
+    },
+    Inventario:{
+        Dinero
     }
 */
 
@@ -86,6 +90,26 @@ StringVector loadDatas(const char* nameFile){
     }catch(int e){
         cout<<endl<<"ERROR: #"<<e<<endl<<endl;
         system("pause");
+    }
+}
+
+Inventario crearInventario(){
+    return (struct inventario *)malloc(sizeof(struct inventario));
+}
+
+Inventario parsearRegInventario(string r){
+    StringVector rv = Explode(r, '@');
+    Inventario i = crearInventario();
+    i->addDinero( atoi(rv[0].c_str() ) );
+    return i;
+}
+
+void loadDataInvetario(){
+    StringVector registros = loadDatas(nameFilePersonas); //Cargamos las lineas del archivo
+    //Si no esta vacio;
+    while(registros.empty()){
+        dataInventario = parsearRegInventario(registro[0]);
+        return;
     }
 }
 
@@ -328,8 +352,6 @@ Detalles parsearRegDetalles(string r){
     det->setEmpleado( getEmpleadosByDNI( atoi(rv[3].c_str()) ) );
     return det;
 }
-
-
 
 Detalles loadDataDetalles(int codigoFactura){
     StringVector registros = loadDatas(nameFileDetalles);
