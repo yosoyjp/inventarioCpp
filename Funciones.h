@@ -272,17 +272,43 @@ Item loadDataItems(int codigoFactura){
     Item aux;
 
     for(int i = 0; i < registros.size(); i++ ){
-        if(it == NULL){ //Si esta vacia
-            it = parsearRegItem(registros[i]);
-        }else{
-            aux = it;
-            while(aux->getSiguiente() != NULL){
-                aux = aux->getSiguiente();
+        if(parsearRegItem(registros[i])->getCodigoFactura() == codigoFactura){
+            if(it == NULL){ //Si esta vacia        
+                it = parsearRegItem(registros[i]);
+            }else{
+                aux = it;
+                while(aux->getSiguiente() != NULL){
+                    aux = aux->getSiguiente();
+                }
+                aux->setSiguiente(parsearRegItem(registro[i])); //Se añade al final de la lista
             }
-            aux->setSiguiente(parsearRegItem(registro[i])); //Se añade al final de la lista
         }
     }
     return it;
+}
+
+Cliente getClientesByDNI(int dni){
+    Cliente aux = listCliente;
+    Cliente ret = crearCliente();
+    while( aux->getSiguiente() ){
+        if(aux->getDNI() == dni){
+            ret->setSiguiente(aux);
+        }
+        aux = aux->getSiguiente();
+    }
+    return ret;
+}
+
+Empleado getEmpleadosByDNI(int dni){
+    Empleado aux = listEmpleado;
+    Empleado ret = crearEmpleado();
+    while( aux->getSiguiente() ){
+        if(aux->getDNI() == dni){
+            ret->setSiguiente(aux);
+        }
+        aux = aux->getSiguiente();
+    }
+    return ret;
 }
 
 Detalles crearDetalle(){
@@ -292,8 +318,38 @@ Detalles crearDetalle(){
 Detalles parsearRegDetalles(string r){
     StringVector rv = Explode(r, '@');
     Detalles det = crearDetalle();
-            CodigoFactura@Fecha@DNICliente@DNIEmpleado
+            // CodigoFactura@Fecha@DNICliente@DNIEmpleado
     det->setCodigoFactura( atoi(rv[0].c_str()) );
+    det->setFecha( rv[1] );
+
+    //Cargamos al cliente
+    det->setCliente( getClientesByDNI( atoi(rv[2].c_str()) ) );
+    //Cargamos al empleado
+    det->setEmpleado( getEmpleadosByDNI( atoi(rv[3].c_str()) ) );
+    return det;
+}
+
+
+
+Detalles loadDataDetalles(int codigoFactura){
+    StringVector registros = loadDatas(nameFileDetalles);
+    Detalles it;
+    Detalles aux;
+
+    for(int i = 0; i < registros.size(); i++ ){
+        if(parsearRegDetalles(registros[i])->getCodigoFactura() == codigoFactura){
+            if(it == NULL){ //Si esta vacia        
+                it = parsearRegDetalles(registros[i]);
+            }else{
+                aux = it;
+                while(aux->getSiguiente() != NULL){
+                    aux = aux->getSiguiente();
+                }
+                aux->setSiguiente(parsearRegDetalles(registro[i])); //Se añade al final de la lista
+            }
+        }
+    }
+    return it;
 }
 
 Factura crearFactura(){
@@ -309,7 +365,7 @@ Factura parsearRegFactura(string r){
     //Cargar item
     f->setItem( loadDataItems( f->getCodigo() ) );
     //Cargar detalles
-
+    f->setDetalles( loadDataDetalles( f->getCodigo()) );
     return f;
 }
 

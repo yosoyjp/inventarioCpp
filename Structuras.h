@@ -182,6 +182,7 @@ struct detalles{
     char Fecha[100];
     empleado *emple;
     cliente *clie;
+    detalles *sgte;
 
     int getCodigoFactura(){
         return codigoFactura;
@@ -220,6 +221,12 @@ struct detalles{
     }
     cliente *getCliente(){
         return clie;
+    }
+    void setSiguiente(detalles *i){
+        sgte = i;
+    }
+    detalles *getSiguiente(){
+        return sgte;
     }
 };
 
