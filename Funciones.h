@@ -540,3 +540,30 @@ void RegistrarNuevoProducto(){
         }
     }while(true && sw==false);
 }
+
+void RegistrarNuevoProveedor(){
+    string nombre, nit, telefono;
+    proveedor * nuevo = crearProveedor();
+    proveedor * aux = listProveedor;
+    cout<<"Digite el nombre"<<endl;
+    cin>>nombre;
+    cin.ignore(256, '\n');
+    cout<<"Digite el NIT"<<endl;
+    cin>>nit;
+    cin.ignore(256, '\n');
+    cout<<"Digite el telefono"<<endl;
+    cin>>telefono;
+    cin.ignore(256, '\n');
+    nuevo->setNombre(nombre);
+    nuevo->setTelefono(telefono);
+    nuevo->setNIT(nit);
+
+    while(aux){
+        if(aux->getSiguiente() == NULL){
+            aux->setSiguiente(nuevo);
+            break;
+        }else{
+            aux = aux->getSiguiente();
+        }
+    }
+}
