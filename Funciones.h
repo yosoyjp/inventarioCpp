@@ -470,6 +470,25 @@ void MostrarTodosProductos(){
     }
 }
 
+void MostrarTodosClientes(){
+    cliente * aux = listCliente;
+    persona * auxP = NULL;
+    while(aux){
+        auxP = listPersona;
+        while(auxP){
+            if(aux->getDNI() == auxP->getDNI()){
+                cout<<"**************************"<<endl;
+                cout<<"    Nombre: "<<auxP->getNombre()<<endl;
+                cout<<"  Apellido: "<<auxP->getApellido()<<endl;
+                cout<<"  Telefono: "<<auxP->getTelefono()<<endl;
+                cout<<"       DNI: "<<auxP->getDNI()<<endl;
+            }
+            auxP = auxP->getSiguiente();
+        }
+        aux = aux->getSiguiente();
+    }
+}
+
 int MostrarTodosProveedores(){
     proveedor * aux = listProveedor;
     int i = 0;

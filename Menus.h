@@ -90,6 +90,51 @@ void MenuProveedor(){
     }
 }
 
+void ImprimirMenuCliente(){
+	system("clear");
+	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
+	cout<<"	||**********************************************************************************************************||"<<endl;
+	cout<<"	||***                                             Clientes                                               ***||"<<endl;
+	cout<<"	||***                                             ________                                               ***||"<<endl;
+	cout<<"	||***                                                                                                    ***||"<<endl;
+	cout<<"	||***                                                                                                    ***||"<<endl;
+	cout<<"	||***                      [1].  Ver Todos                                                               ***||"<<endl;
+	cout<<"	||***                      [2].  Registrar                                                               ***||"<<endl;
+	cout<<"	||***                      [3].  Salir                                                                   ***||"<<endl;
+	cout<<"	||***                                                                                                    ***||"<<endl;
+	cout<<"	||***                                                               Digite El Numero De Su Opcion        ***||"<<endl;
+	cout<<"	||**********************************************************************************************************||"<<endl;
+	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
+}
+
+void MenuCliente(){
+	int op;
+	char a;
+    while(true){
+        ImprimirMenuCliente();
+        cin>>op;
+        if(cin.fail() || op>3 || op<1){ //Si ingreso un dato invalido
+			cin.clear();
+			cin.ignore(256, '\n');
+			op=0;
+			continue;
+		}
+        switch(op){
+            case 1:
+				system("clear");
+                MostrarTodosClientes();
+				cin>>a;
+                break;
+            case 2:
+                // RegistrarNuevoCliente();
+                break;
+            case 3:
+                //Salir;
+                return;
+        }
+    }
+}
+
 void ImprimirMenuPrincipal(){
 	system("clear");
 	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
@@ -137,6 +182,7 @@ void MenuPrincipal(){
 				break;
 			case 4:
 				//Clientes
+				MenuCliente();
 				break;
 			case 5:
 				//Empleados
