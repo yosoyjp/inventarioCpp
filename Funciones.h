@@ -492,6 +492,7 @@ void RegistrarNuevoProducto(){
     int i = 0;
     proveedor * aux = listProveedor;
     producto * auxP;
+    bool sw = false;
     do{
         system("clear");
         cout<<"Digite el numero del proveedor"<<endl;
@@ -508,16 +509,19 @@ void RegistrarNuevoProducto(){
         }
         cout<<"Digite el Nombre"<<endl;
         cin>>nombre;
+        cin.ignore(256, '\n');
         cout<<"Digite el Codigo"<<endl;
         cin>>codigo;
+        cin.ignore(256, '\n');
         cout<<"Digite el Precio"<<endl;
         cin>>precio;
+        cin.ignore(256, '\n');
 
         //Buscamos el proveedor
-        while(aux){
-            if(i = prov){ // si lo encuentro
+        while(aux && sw==false){
+            if(i == prov){ // si lo encuentro
                 auxP = aux->getProducto();
-                while(true){
+                while(auxP && sw==false){
                     if(auxP->sgte){
                         auxP = auxP->sgte;
                     }else{
@@ -526,9 +530,13 @@ void RegistrarNuevoProducto(){
                         auxP->getSiguiente()->setPrecio(precio);
                         auxP->getSiguiente()->setCodigo(codigo);
                         auxP->getSiguiente()->setNITProveedor(aux->getNIT());
+                        sw = true;
+                        break;
                     }
                 }
             }
+            i++;
+            aux = aux->getSiguiente();
         }
-    }while(true);
+    }while(true && sw==false);
 }
