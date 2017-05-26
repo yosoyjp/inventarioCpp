@@ -94,13 +94,13 @@ StringVector loadDatas(const char* nameFile){
     }
 }
 
-Inventario crearInventario(){
-    return (struct inventario *)malloc(sizeof(struct inventario));
+inventario * crearInventario(){
+    return (inventario *)malloc(sizeof(inventario));
 }
 
-Inventario parsearRegInventario(string r){
+inventario * parsearRegInventario(string r){
     StringVector rv = Explode(r, '@');
-    Inventario i = crearInventario();
+    inventario * i = crearInventario();
     i->addDinero( atoi(rv[0].c_str() ) );
     return i;
 }
@@ -120,13 +120,15 @@ void loadDataInvetario(){
     dataInventario = crearInventario(); //Si no habia datos, solo se crea el inventario con los datos iniciales.
 }
 
-Persona crearPersona(){
-    return (struct persona *)malloc(sizeof(struct persona));
+persona * crearPersona(){
+    persona *p = (persona *)malloc(sizeof(persona));
+    p->sgte = NULL;
+    return p;
 }
 
-Persona parsearRegPersona(string r){
+persona * parsearRegPersona(string r){
     StringVector rv = Explode(r, '@');
-    Persona p = crearPersona();
+    persona *p = crearPersona();
     p->setNombre(rv[0]);
     p->setApellido(rv[1]);
     p->setDNI(atoi(rv[2].c_str()));
@@ -136,7 +138,7 @@ Persona parsearRegPersona(string r){
 
 void loadDataPersonas(){
     StringVector registros = loadDatas(nameFilePersonas); //Cargamos las lineas del archivo
-    Persona peoples = listPersona;
+    persona *peoples = listPersona;
 
     
     //Guardamos los datos en la lista de la estructura personas;
@@ -146,21 +148,23 @@ void loadDataPersonas(){
         }else{
             peoples = listPersona;
             while(peoples->sgte != NULL){
-                peoples = peoples->sgte;
+                peoples = peoples->getSiguiente();
             }
-            peoples->sgte = parsearRegPersona(registros[i]); //Se añade al final de la lista
+            peoples->setSiguiente( parsearRegPersona(registros[i])); //Se añade al final de la lista
         }
     }
     cout<<"************************************HERE PERSONA**"<<endl;
 }
 
-Producto crearProducto(){
-    return (struct producto *)malloc(sizeof(struct producto));
+producto * crearProducto(){
+    producto * p = (producto *)malloc(sizeof(producto));
+    p->sgte = NULL;
+    return p;
 }
 
-Producto parsearRegProducto(string r){
+producto * parsearRegProducto(string r){
     StringVector rv = Explode(r, '@');
-    Producto p = crearProducto();
+    producto * p = crearProducto();
     p->setNombre( rv[0] );
     p->setCodigo( atoi( rv[1].c_str() ) );
     p->setPrecio( atoi( rv[2].c_str() ) );
@@ -168,30 +172,27 @@ Producto parsearRegProducto(string r){
     return p;
 }
 
-Producto loadDataProductos(string NIT){
+producto * loadDataProductos(string NIT){
     StringVector registros = loadDatas(nameFileProductos);
-    Producto prod;
-    Producto aux;
+    producto * prod = NULL;
+    producto * aux = NULL;
 
     //Guardamos los datos en la lista de la estructura producto, la cual se va a retornar;
     for(int i = 0; i < registros.size(); i++ ){
         
-        if(i == 0){ //Si esta vacia
+        if(!prod){ //Si esta vacia
             /* Validamos si es un producto de este proveedor */
             string g = parsearRegProducto(registros[i])->getNITProveedor();
             if(g == NIT){
                 prod = parsearRegProducto(registros[i]);
+                prod->setSiguiente(NULL);
             }
         }else{
-            cout<<prod->getNombre()<<endl;
             aux = prod;
-            while(aux->getSiguiente() != NULL){
-                cout<<aux->getSiguiente();
+            while(aux->sgte){
                 aux = aux->getSiguiente();
-                
-                cout<<"************************************HERE PROfdsfDUCTO**"<<endl;    
             }
-            cout<<"************************************HERE PROaaaaaDUCTO**"<<endl;    
+            
             /* Validamos si es un producto de este proveedor */
             string g = parsearRegProducto(registros[i])->getNITProveedor();
             if(g == NIT){
@@ -202,13 +203,13 @@ Producto loadDataProductos(string NIT){
     return prod;
 }
 
-Proveedor crearProveedor(){
-    return (struct proveedor *)malloc(sizeof(struct proveedor));
+proveedor * crearProveedor(){
+    return ( proveedor *)malloc(sizeof(proveedor));
 }
 
-Proveedor parsearRegProveedor(string r){
+proveedor * parsearRegProveedor(string r){
     StringVector rv = Explode(r, '@');
-    Proveedor p = crearProveedor();
+    proveedor * p = crearProveedor();
     p->setNombre(rv[0]);
     p->setNIT(rv[1]);
     p->setTelefono(rv[2]);
@@ -219,14 +220,13 @@ Proveedor parsearRegProveedor(string r){
 
 void loadDataProveedores(){
     StringVector registros = loadDatas(nameFileProveedores);
-    Proveedor pro = listProveedor;
+    proveedor * pro = listProveedor;
     
     if(!registros.empty()){
         cout<<"**HERE PROVEEDOR**"<<endl;
     }
     //Guardamos los datos en la lista de la estructura proveedor;
     for(int i = 0; i < registros.size(); i++ ){
-        
         if(listProveedor == NULL){ //Si esta vacia
             listProveedor = parsearRegProveedor(registros[i]);
         }else{
@@ -239,21 +239,21 @@ void loadDataProveedores(){
     }
 }
 
-Cliente crearCliente(){
-    return (struct cliente *)malloc(sizeof(struct cliente));
+cliente * crearCliente(){
+    return (cliente *)malloc(sizeof( cliente));
 }
 
-Cliente parsearRegCliente(string r){
+cliente * parsearRegCliente(string r){
     StringVector rv = Explode(r, '@');
-    Cliente c = crearCliente();
+    cliente * c = crearCliente();
     c->setDNI( atoi( rv[0].c_str() ) );
     return c;
 }
 
 void loadDataClientes(){
     StringVector registros = loadDatas(nameFileClientes);
-    Cliente cli = listCliente;
-    cout<<"**HERE ADSDASD**"<<endl;
+    cliente * cli = listCliente;
+    cout<<"**HERE CLIENTE**"<<endl;
     //Guardamos los datos en la lista de la estructura cliente;
     for(int i = 0; i < registros.size(); i++ ){
         if(listCliente == NULL){ //Si esta vacia
@@ -269,20 +269,20 @@ void loadDataClientes(){
     cout<<"******************************* HERE CLIENTE**"<<endl;
 }
 
-Empleado crearEmpleado(){
-    return (struct empleado *)malloc(sizeof(struct empleado));
+empleado * crearEmpleado(){
+    return (empleado *)malloc(sizeof( empleado));
 }
 
-Empleado parsearRegEmpleado(string r){
+empleado * parsearRegEmpleado(string r){
     StringVector rv = Explode(r, '@');
-    Empleado e = crearEmpleado();
+    empleado * e = crearEmpleado();
     e->setDNI( atoi( rv[0].c_str() ) );
     return e;
 }
 
 void loadDataEmpleados(){
     StringVector registros = loadDatas(nameFileEmpleados);
-    Empleado emp = listEmpleado;
+    empleado * emp = listEmpleado;
 
     //Guardamos los datos en la lista de la estructura empleado;
     for(int i = 0; i < registros.size(); i++ ){
@@ -298,13 +298,13 @@ void loadDataEmpleados(){
     }
 }
 
-Item crearItem(){
-    return (struct item *)malloc(sizeof(struct item));
+item * crearItem(){
+    return (item *)malloc(sizeof(item));
 }
 
-Item parsearRegItem(string r){
+item * parsearRegItem(string r){
     StringVector rv = Explode(r, '@');
-    Item i = crearItem();
+    item * i = crearItem();
 
     i->setCodigoFactura(  atoi(rv[0].c_str() ) );
     i->setCodigoProducto( atoi(rv[1].c_str() ) );
@@ -312,10 +312,10 @@ Item parsearRegItem(string r){
     return i;
 }
 
-Item loadDataItems(int codigoFactura){
+item * loadDataItems(int codigoFactura){
     StringVector registros = loadDatas(nameFileItems);
-    Item it;
-    Item aux;
+    item * it;
+    item * aux;
 
     for(int i = 0; i < registros.size(); i++ ){
         if(parsearRegItem(registros[i])->getCodigoFactura() == codigoFactura){
@@ -333,9 +333,9 @@ Item loadDataItems(int codigoFactura){
     return it;
 }
 
-Cliente getClientesByDNI(int dni){
-    Cliente aux = listCliente;
-    Cliente ret = crearCliente();
+cliente * getClientesByDNI(int dni){
+    cliente * aux = listCliente;
+    cliente * ret = crearCliente();
     while( aux->getSiguiente() ){
         if(aux->getDNI() == dni){
             ret->setSiguiente(aux);
@@ -345,9 +345,9 @@ Cliente getClientesByDNI(int dni){
     return ret;
 }
 
-Empleado getEmpleadosByDNI(int dni){
-    Empleado aux = listEmpleado;
-    Empleado ret = crearEmpleado();
+empleado * getEmpleadosByDNI(int dni){
+    empleado * aux = listEmpleado;
+    empleado * ret = crearEmpleado();
     while( aux->getSiguiente() ){
         if(aux->getDNI() == dni){
             ret->setSiguiente(aux);
@@ -357,13 +357,13 @@ Empleado getEmpleadosByDNI(int dni){
     return ret;
 }
 
-Detalles crearDetalle(){
-    return (struct detalles *)malloc(sizeof(struct detalles));    
+detalles * crearDetalle(){
+    return (detalles *)malloc(sizeof(detalles));    
 }
 
-Detalles parsearRegDetalles(string r){
+detalles * parsearRegDetalles(string r){
     StringVector rv = Explode(r, '@');
-    Detalles det = crearDetalle();
+    detalles * det = crearDetalle();
             // CodigoFactura@Fecha@DNICliente@DNIEmpleado
     det->setCodigoFactura( atoi(rv[0].c_str()) );
     det->setFecha( rv[1] );
@@ -375,10 +375,10 @@ Detalles parsearRegDetalles(string r){
     return det;
 }
 
-Detalles loadDataDetalles(int codigoFactura){
+detalles * loadDataDetalles(int codigoFactura){
     StringVector registros = loadDatas(nameFileDetalles);
-    Detalles it;
-    Detalles aux;
+    detalles * it;
+    detalles * aux;
 
     for(int i = 0; i < registros.size(); i++ ){
         if(parsearRegDetalles(registros[i])->getCodigoFactura() == codigoFactura){
@@ -396,13 +396,13 @@ Detalles loadDataDetalles(int codigoFactura){
     return it;
 }
 
-Factura crearFactura(){
-    return (struct factura *)malloc(sizeof(struct factura));
+factura * crearFactura(){
+    return (factura *)malloc(sizeof(factura));
 }
 
-Factura parsearRegFactura(string r){
+factura * parsearRegFactura(string r){
     StringVector rv = Explode(r, '@');
-    Factura f = crearFactura();
+    factura * f = crearFactura();
 
     f->setCodigo( atoi(rv[0].c_str() ) );
     f->setFormaDePago(rv[1]);
@@ -415,7 +415,7 @@ Factura parsearRegFactura(string r){
 
 void loadDataFacturas(){
     StringVector registros = loadDatas(nameFileFacturas);
-    Factura fac = listFactura;
+    factura * fac = listFactura;
 
     for(int i = 0; i < registros.size(); i++ ){
         if(listFactura == NULL){ //Si esta vacia
@@ -431,8 +431,8 @@ void loadDataFacturas(){
 }
 
 void MostrarTodosProductos(){
-    Proveedor aux = listProveedor;
-    Producto auxP;
+    proveedor * aux = listProveedor;
+    producto * auxP;
     while(aux){
         auxP = aux->getProducto();
         cout<<"Nombre: "<<aux->getNombre()<<endl;

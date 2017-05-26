@@ -3,26 +3,18 @@
 
 using namespace std;
 
-//Declaramos nuevos tipos de datos a usar;
-typedef vector<string> StringVector;
-typedef struct persona *Persona;
-typedef struct producto *Producto;
-typedef struct proveedor *Proveedor;
-typedef struct detalles *Detalles;
-typedef struct empleado *Empleado;
-typedef struct cliente *Cliente;
-typedef struct factura *Factura;
-typedef struct item *Item;
-typedef struct inventario *Inventario;
-
-Persona listPersona;
-Proveedor listProveedor;
-Empleado listEmpleado;
-Cliente listCliente;
-Factura listFactura;
-Inventario dataInventario;
-
 #include "Structuras.h"
+
+//Declaramos un nuevo tipo de datos que es un vector de string
+typedef vector<string> StringVector;
+
+persona *listPersona;
+proveedor * listProveedor;
+empleado * listEmpleado;
+cliente * listCliente;
+factura * listFactura;
+inventario * dataInventario;
+
 #include "Funciones.h"
 
 void CargarTodosDatos(){
@@ -40,7 +32,8 @@ void CargarTodosDatos(){
 int main(){
 	CargarTodosDatos();
 	cout<<listProveedor->getNombre()<<endl;
-	// MenuPrincipal();
+	cout<<listProveedor->getSiguiente()->getProducto()->getNombre()<<endl;
+	MenuPrincipal();
 	 
 	 return 0;
 }

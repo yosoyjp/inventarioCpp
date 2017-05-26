@@ -9,19 +9,13 @@ const string EFECTIVO = "Efectivo";
 
 const string cadena = "";
 
-struct persona{
+typedef struct persona{
     char Nombre[100];
     char Apellido[100];
     int DNI;
     char Telefono[20];
-    persona *sgte;
+    struct persona *sgte;
 
-    persona(){
-        strcpy(Nombre, cadena.c_str());
-        strcpy(Apellido, cadena.c_str());
-        DNI = (int)NULL;
-        strcpy(Telefono, cadena.c_str());
-    }
     string getNombre(){
         return (string)Nombre;
     }
@@ -62,15 +56,70 @@ struct persona{
         }
         return false;
     }
-    void setSiguiente(persona *f){
+    void setSiguiente(struct persona *f){
         sgte=f;
     }
-    persona *getSiguiente(){
+    struct persona *getSiguiente(){
         return sgte;
     }
-};
+}persona;
 
-struct proveedor{
+typedef struct producto{
+    char Nombre[100];
+    int Codigo;
+    int Precio;
+    char NITProveedor[20];
+    struct producto *sgte;
+
+    string getNombre(){
+        return string(Nombre);
+    }
+    bool setNombre(string name){
+        if(!name.empty()){
+            strcpy(Nombre, name.c_str());
+            return true;
+        }
+        return false;
+    }
+    int getCodigo(){
+        return Codigo;
+    }
+    bool setCodigo(int c){
+        if(c != (int)NULL && c >= 0){
+            Codigo = c;
+            return true;
+        }
+        return false;
+    }
+    int getPrecio(){
+        return Precio;
+    }
+    bool setPrecio(int c){
+        if(c != (int)NULL && c >= 0){
+            Precio = c;
+            return true;
+        }
+        return false;
+    }
+    bool setNITProveedor(string nit){
+        if(!nit.empty()){
+            strcpy(NITProveedor, nit.c_str());
+            return true;
+        }
+        return false;
+    }
+    string getNITProveedor(){
+        return (string)NITProveedor;
+    }
+    void setSiguiente(struct producto *f){
+        sgte = f;
+    }
+    struct producto *getSiguiente(){
+        return sgte;
+    }
+}producto;
+
+typedef struct proveedor{
     proveedor *sgte;
     char Nombre[100];
     char NIT[20];
@@ -117,72 +166,17 @@ struct proveedor{
     void setProducto(producto *f){
         prodc=f;
     }
-    producto *getProducto(){
+    producto * getProducto(){
         return prodc;
     }
-};
+}proveedor;
 
-struct producto{
-    char Nombre[100];
-    int Codigo;
-    int Precio;
-    char NITProveedor[20];
-    producto *sgte;
-
-    string getNombre(){
-        return string(Nombre);
-    }
-    bool setNombre(string name){
-        if(!name.empty()){
-            strcpy(Nombre, name.c_str());
-            return true;
-        }
-        return false;
-    }
-    int getCodigo(){
-        return Codigo;
-    }
-    bool setCodigo(int c){
-        if(c != (int)NULL && c >= 0){
-            Codigo = c;
-            return true;
-        }
-        return false;
-    }
-    int getPrecio(){
-        return Precio;
-    }
-    bool setPrecio(int c){
-        if(c != (int)NULL && c >= 0){
-            Precio = c;
-            return true;
-        }
-        return false;
-    }
-    bool setNITProveedor(string nit){
-        if(!nit.empty()){
-            strcpy(NITProveedor, nit.c_str());
-            return true;
-        }
-        return false;
-    }
-    string getNITProveedor(){
-        return (string)NITProveedor;
-    }
-    void setSiguiente(producto *f){
-        sgte = f;
-    }
-    producto *getSiguiente(){
-        return sgte;
-    }
-};
-
-struct detalles{
+typedef struct detalles{
     int codigoFactura;
     char Fecha[100];
-    empleado *emple;
-    cliente *clie;
-    detalles *sgte;
+    struct empleado *emple;
+    struct cliente *clie;
+    struct detalles *sgte;
 
     int getCodigoFactura(){
         return codigoFactura;
@@ -204,33 +198,33 @@ struct detalles{
         }
         return false;
     }
-    bool setEmpleado(empleado *e){
+    bool setEmpleado(struct empleado *e){
         if(e != NULL){
             emple = e;
             return true;
         }
     }
-    empleado *getEmpleado(){
+    struct empleado *getEmpleado(){
         return emple;
     }
-    bool setCliente(cliente *e){
+    bool setCliente(struct cliente *e){
         if(e != NULL){
             clie = e;
             return true;
         }
     }
-    cliente *getCliente(){
+    struct cliente *getCliente(){
         return clie;
     }
-    void setSiguiente(detalles *i){
+    void setSiguiente(struct detalles *i){
         sgte = i;
     }
-    detalles *getSiguiente(){
+    struct detalles *getSiguiente(){
         return sgte;
     }
-};
+}detalles;
 
-struct item{
+typedef struct item{
     int codigoPoducto;
     int cantidad;
     int codigoFactura;
@@ -275,9 +269,9 @@ struct item{
     item *getSiguiente(){
         return sgte;
     }
-};
+}item;
 
-struct factura{
+typedef struct factura{
     int Codigo;
     char formaPago[20];
     item *it;
@@ -320,9 +314,9 @@ struct factura{
         }
         return false;
     }
-};
+}factura;
 
-struct cliente{
+typedef struct cliente{
     int DNI;
     cliente *sgte;
     cliente(){
@@ -344,9 +338,9 @@ struct cliente{
     bool setSiguiente(cliente *f){
         sgte = f;
     }
-};
+}cliente;
 
-struct empleado{
+typedef struct empleado{
     int DNI;
     empleado *sgte;
     empleado(){
@@ -368,9 +362,9 @@ struct empleado{
     bool setSiguiente(empleado *f){
         sgte = f;
     }
-};
+}empleado;
 
-struct inventario{
+typedef struct inventario{
     int Dinero;
     inventario(){
         Dinero = 0;
@@ -385,4 +379,4 @@ struct inventario{
     int getDinero(){
         return Dinero;
     }
-};
+}inventario;
