@@ -126,7 +126,7 @@ void MenuCliente(){
 				cin>>a;
                 break;
             case 2:
-                // RegistrarNuevoCliente();
+                RegistrarNuevoCliente();
                 break;
             case 3:
                 //Salir;

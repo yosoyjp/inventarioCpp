@@ -586,3 +586,48 @@ void RegistrarNuevoProveedor(){
         }
     }
 }
+
+void RegistrarNuevoCliente(){
+    string nombre, telefono, apellido;
+    int dni;
+    cliente * aux = listCliente;
+    persona * auxP = listPersona;
+    persona * nuevaP;
+    cliente * nuevoC;
+
+    cout<<"Digite el nombre"<<endl;
+    cin>>nombre;
+    cin.ignore(256, '\n');
+    cout<<"Digite el apellido"<<endl;
+    cin>>apellido;
+    cin.ignore(256, '\n');
+    cout<<"Digite el DNI"<<endl;
+    cin>>dni;
+    cin.ignore(256, '\n');
+    cout<<"Digite el telefono"<<endl;
+    cin>>telefono;
+    cin.ignore(256, '\n');
+
+    while(auxP){
+        if(auxP->getSiguiente() == NULL){
+            nuevaP = crearPersona();
+            nuevaP->setNombre(nombre);
+            nuevaP->setApellido(apellido);
+            nuevaP->setDNI(dni);
+            nuevaP->setTelefono(telefono);
+            auxP->setSiguiente(nuevaP);
+            break;
+        }
+        auxP = auxP->getSiguiente();
+    }
+
+    while(aux){
+        if(aux->getSiguiente() == NULL){
+            nuevoC = crearCliente();
+            nuevoC->setDNI(dni);
+            aux->setSiguiente(nuevoC);
+            break;
+        }
+        aux = aux->getSiguiente();
+    }
+}
