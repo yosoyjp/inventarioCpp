@@ -489,6 +489,25 @@ void MostrarTodosClientes(){
     }
 }
 
+void MostrarTodosEmpleado(){
+    empleado * aux = listEmpleado;
+    persona * auxP = NULL;
+    while(aux){
+        auxP = listPersona;
+        while(auxP){
+            if(aux->getDNI() == auxP->getDNI()){
+                cout<<"**************************"<<endl;
+                cout<<"    Nombre: "<<auxP->getNombre()<<endl;
+                cout<<"  Apellido: "<<auxP->getApellido()<<endl;
+                cout<<"  Telefono: "<<auxP->getTelefono()<<endl;
+                cout<<"       DNI: "<<auxP->getDNI()<<endl;
+            }
+            auxP = auxP->getSiguiente();
+        }
+        aux = aux->getSiguiente();
+    }
+}
+
 int MostrarTodosProveedores(){
     proveedor * aux = listProveedor;
     int i = 0;
@@ -624,6 +643,51 @@ void RegistrarNuevoCliente(){
     while(aux){
         if(aux->getSiguiente() == NULL){
             nuevoC = crearCliente();
+            nuevoC->setDNI(dni);
+            aux->setSiguiente(nuevoC);
+            break;
+        }
+        aux = aux->getSiguiente();
+    }
+}
+
+void RegistrarNuevoEmpleado(){
+    string nombre, telefono, apellido;
+    int dni;
+    empleado * aux = listEmpleado;
+    persona * auxP = listPersona;
+    persona * nuevaP;
+    empleado * nuevoC;
+
+    cout<<"Digite el nombre"<<endl;
+    cin>>nombre;
+    cin.ignore(256, '\n');
+    cout<<"Digite el apellido"<<endl;
+    cin>>apellido;
+    cin.ignore(256, '\n');
+    cout<<"Digite el DNI"<<endl;
+    cin>>dni;
+    cin.ignore(256, '\n');
+    cout<<"Digite el telefono"<<endl;
+    cin>>telefono;
+    cin.ignore(256, '\n');
+
+    while(auxP){
+        if(auxP->getSiguiente() == NULL){
+            nuevaP = crearPersona();
+            nuevaP->setNombre(nombre);
+            nuevaP->setApellido(apellido);
+            nuevaP->setDNI(dni);
+            nuevaP->setTelefono(telefono);
+            auxP->setSiguiente(nuevaP);
+            break;
+        }
+        auxP = auxP->getSiguiente();
+    }
+
+    while(aux){
+        if(aux->getSiguiente() == NULL){
+            nuevoC = crearEmpleado();
             nuevoC->setDNI(dni);
             aux->setSiguiente(nuevoC);
             break;

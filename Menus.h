@@ -135,6 +135,50 @@ void MenuCliente(){
     }
 }
 
+void ImprimirMenuEmpleado(){
+	system("clear");
+	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
+	cout<<"	||**********************************************************************************************************||"<<endl;
+	cout<<"	||***                                             Empleados                                              ***||"<<endl;
+	cout<<"	||***                                             _________                                              ***||"<<endl;
+	cout<<"	||***                                                                                                    ***||"<<endl;
+	cout<<"	||***                                                                                                    ***||"<<endl;
+	cout<<"	||***                      [1].  Ver Todos                                                               ***||"<<endl;
+	cout<<"	||***                      [2].  Registrar                                                               ***||"<<endl;
+	cout<<"	||***                      [3].  Salir                                                                   ***||"<<endl;
+	cout<<"	||***                                                                                                    ***||"<<endl;
+	cout<<"	||***                                                               Digite El Numero De Su Opcion        ***||"<<endl;
+	cout<<"	||**********************************************************************************************************||"<<endl;
+	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
+}
+
+void MenuEmpleado(){
+	int op;
+	char a;
+    while(true){
+        ImprimirMenuEmpleado();
+        cin>>op;
+        if(cin.fail() || op>3 || op<1){ //Si ingreso un dato invalido
+			cin.clear();
+			cin.ignore(256, '\n');
+			op=0;
+			continue;
+		}
+        switch(op){
+            case 1:
+				system("clear");
+                MostrarTodosEmpleado();
+				cin>>a;
+                break;
+            case 2:
+                RegistrarNuevoEmpleado();
+                break;
+            case 3:
+                //Salir;
+                return;
+        }
+    }
+}
 void ImprimirMenuPrincipal(){
 	system("clear");
 	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
@@ -186,6 +230,7 @@ void MenuPrincipal(){
 				break;
 			case 5:
 				//Empleados
+				MenuEmpleado();
 				break;
 			case 7:
 				//Guardar
