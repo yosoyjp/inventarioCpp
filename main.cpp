@@ -8,12 +8,12 @@ using namespace std;
 //Declaramos un nuevo tipo de datos que es un vector de string
 typedef vector<string> StringVector;
 
-persona *listPersona;
-proveedor * listProveedor;
-empleado * listEmpleado;
-cliente * listCliente;
-factura * listFactura;
-inventario * dataInventario;
+persona *listPersona = NULL;
+proveedor * listProveedor = NULL;
+empleado * listEmpleado = NULL;
+cliente * listCliente = NULL;
+factura * listFactura = NULL;
+inventario * dataInventario = NULL;
 
 #include "Funciones.h"
 
@@ -33,6 +33,7 @@ int main(){
 	CargarTodosDatos();
 	cout<<listProveedor->getNombre()<<endl;
 	cout<<listProveedor->getSiguiente()->getProducto()->getNombre()<<endl;
+	
 	MenuPrincipal();
 	 
 	 return 0;

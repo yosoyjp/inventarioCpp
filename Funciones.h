@@ -78,14 +78,17 @@ StringVector loadDatas(const char* nameFile){
         }
 
         //Si si lo abrió
-        do{
+        
+        while(!fileLectura.eof()){
+            if(nameFile == nameFileProductos)
+                cout<<"HOLA"<<endl;
             fileLectura.getline(cad, 250); //Leemos linea por linea el archivo.
             cadenaParser = (string)cad; //Lo convertimos en string
             if(!cadenaParser.empty()){ //Si la cadena no esta vacia
                 cout<<cadenaParser<<endl;
                 lineas.push_back(cadenaParser); //La incluimos en el vector de string
             }
-        }while(!fileLectura.eof()); //Mientras que no lleguemos el fin de el archivo
+        } //Mientras que no lleguemos el fin de el archivo
         fileLectura.close();
         return lineas;
     }catch(int e){
@@ -122,7 +125,7 @@ void loadDataInvetario(){
 
 persona * crearPersona(){
     persona *p = (persona *)malloc(sizeof(persona));
-    p->sgte = NULL;
+    p->setSiguiente(NULL);
     return p;
 }
 
@@ -158,7 +161,7 @@ void loadDataPersonas(){
 
 producto * crearProducto(){
     producto * p = (producto *)malloc(sizeof(producto));
-    p->sgte = NULL;
+    p->setSiguiente(NULL);
     return p;
 }
 
@@ -204,7 +207,9 @@ producto * loadDataProductos(string NIT){
 }
 
 proveedor * crearProveedor(){
-    return ( proveedor *)malloc(sizeof(proveedor));
+    proveedor * p = ( proveedor *)malloc(sizeof(proveedor));
+    p->setSiguiente(NULL);
+    return p;
 }
 
 proveedor * parsearRegProveedor(string r){
@@ -240,7 +245,9 @@ void loadDataProveedores(){
 }
 
 cliente * crearCliente(){
-    return (cliente *)malloc(sizeof( cliente));
+    cliente * p = (cliente *)malloc(sizeof( cliente));
+    p->setSiguiente(NULL);
+    return p;
 }
 
 cliente * parsearRegCliente(string r){
@@ -270,7 +277,9 @@ void loadDataClientes(){
 }
 
 empleado * crearEmpleado(){
-    return (empleado *)malloc(sizeof( empleado));
+    empleado * p = (empleado *)malloc(sizeof( empleado));
+    p->setSiguiente(NULL);
+    return p;
 }
 
 empleado * parsearRegEmpleado(string r){
@@ -299,7 +308,9 @@ void loadDataEmpleados(){
 }
 
 item * crearItem(){
-    return (item *)malloc(sizeof(item));
+    item * p = (item *)malloc(sizeof( item));
+    p->setSiguiente(NULL);
+    return p;
 }
 
 item * parsearRegItem(string r){
@@ -358,7 +369,9 @@ empleado * getEmpleadosByDNI(int dni){
 }
 
 detalles * crearDetalle(){
-    return (detalles *)malloc(sizeof(detalles));    
+    detalles * p = (detalles *)malloc(sizeof( detalles));
+    p->setSiguiente(NULL);
+    return p;
 }
 
 detalles * parsearRegDetalles(string r){
@@ -397,7 +410,9 @@ detalles * loadDataDetalles(int codigoFactura){
 }
 
 factura * crearFactura(){
-    return (factura *)malloc(sizeof(factura));
+    factura * p = (factura *)malloc(sizeof( factura));
+    p->setSiguiente(NULL);
+    return p;
 }
 
 factura * parsearRegFactura(string r){
@@ -416,7 +431,6 @@ factura * parsearRegFactura(string r){
 void loadDataFacturas(){
     StringVector registros = loadDatas(nameFileFacturas);
     factura * fac = listFactura;
-
     for(int i = 0; i < registros.size(); i++ ){
         if(listFactura == NULL){ //Si esta vacia
             listFactura = parsearRegFactura(registros[i]);
@@ -432,10 +446,16 @@ void loadDataFacturas(){
 
 void MostrarTodosProductos(){
     proveedor * aux = listProveedor;
-    producto * auxP;
+    producto * auxP = NULL;
     while(aux){
         auxP = aux->getProducto();
-        cout<<"Nombre: "<<aux->getNombre()<<endl;
+        cout<<"Proveedor: "<<aux->getNombre()<<endl;
+        while(auxP){
+            cout<<"Producto"<<endl;
+            cout<<"Nombre: "<<auxP->getNombre()<<endl;
+            auxP = auxP->getSiguiente();
+        }
         aux = aux->getSiguiente();
+        cout<<endl;
     }
 }

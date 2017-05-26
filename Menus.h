@@ -17,6 +17,7 @@ void ImprimirMenuProductos(){
 
 void MenuProductos(){
     int op;
+	char a;
     while(true){
         ImprimirMenuProductos();
         cin>>op;
@@ -28,7 +29,9 @@ void MenuProductos(){
 		}
         switch(op){
             case 1:
-                //Ver Todos
+				system("clear");
+                MostrarTodosProductos();
+				cin>>a;
                 break;
             case 2:
                 //Registrar Producto Nuevo
@@ -43,7 +46,7 @@ void MenuProductos(){
 }
 
 void ImprimirMenuPrincipal(){
-	system("clear");
+	// system("clear");
 	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
 	cout<<"	||**********************************************************************************************************||"<<endl;
 	cout<<"	||***                                             Inventario                                             ***||"<<endl;
@@ -56,7 +59,7 @@ void ImprimirMenuPrincipal(){
 	cout<<"	||***                      [4].  Facturas                                                                ***||"<<endl;
 	cout<<"	||***                      [5].  Clientes                                                                ***||"<<endl;
 	cout<<"	||***                      [6].  Empleados                                                               ***||"<<endl;
-	cout<<"	||***                      [7].  Dinero En Fondo                                                         ***||"<<endl;
+	cout<<"	||***                      [7].  Dinero en Fondo                                                         ***||"<<endl;
 	cout<<"	||***                      [8].  Guardar                                                                 ***||"<<endl;
 	cout<<"	||***                      [9].  Guardar y Salir                                                         ***||"<<endl;
 	cout<<"	||***                      [10]. Salir Sin Guardar                                                       ***||"<<endl;
