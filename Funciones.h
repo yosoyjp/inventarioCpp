@@ -156,7 +156,6 @@ void loadDataPersonas(){
             peoples->setSiguiente( parsearRegPersona(registros[i])); //Se añade al final de la lista
         }
     }
-    cout<<"************************************HERE PERSONA**"<<endl;
 }
 
 producto * crearProducto(){
