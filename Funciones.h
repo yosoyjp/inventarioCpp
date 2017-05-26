@@ -428,6 +428,16 @@ factura * parsearRegFactura(string r){
     return f;
 }
 
+void imprimirProducto(producto * p, bool nit){
+    cout<<"************************"<<endl;
+    cout<<"    *  Producto"<<endl;
+    cout<<"    *  Nombre: "<<p->getNombre()<<endl;
+    cout<<"    *  Precio: "<<p->getPrecio()<<endl;
+    cout<<"    *  Codigo: "<<p->getCodigo()<<endl;
+    if(nit)
+        cout<<"    *  NIT Proveedor: "<<p->getNITProveedor()<<endl;
+}
+
 void loadDataFacturas(){
     StringVector registros = loadDatas(nameFileFacturas);
     factura * fac = listFactura;
@@ -449,13 +459,76 @@ void MostrarTodosProductos(){
     producto * auxP = NULL;
     while(aux){
         auxP = aux->getProducto();
-        cout<<"Proveedor: "<<aux->getNombre()<<endl;
+        cout<<"____________________________________"<<endl;
+        cout<<"    Proveedor: "<<aux->getNombre()<<endl;
         while(auxP){
-            cout<<"Producto"<<endl;
-            cout<<"Nombre: "<<auxP->getNombre()<<endl;
+            imprimirProducto(auxP, false);
             auxP = auxP->getSiguiente();
         }
         aux = aux->getSiguiente();
         cout<<endl;
     }
+}
+
+int MostrarTodosProveedores(){
+    proveedor * aux = listProveedor;
+    int i = 0;
+    while(aux){
+        cout<<"____________________________________"<<endl;
+        cout<<"  "<<i<<".  Proveedor: "<<aux->getNombre()<<endl;
+        aux = aux->getSiguiente();
+        cout<<endl;
+        i++;
+    }
+    return i;
+}
+
+void RegistrarNuevoProducto(){
+    int prov = 0;
+    int np = 0;
+    string nombre;
+    int codigo = 0;
+    int precio =0;
+    int i = 0;
+    proveedor * aux = listProveedor;
+    producto * auxP;
+    do{
+        system("clear");
+        cout<<"Digite el numero del proveedor"<<endl;
+        np = MostrarTodosProveedores();
+        cin>>prov;
+
+        if(cin.fail()){ //Si el dato no es valido
+            cin.ignore(256, '\n');
+            cin.clear();
+            continue;
+        }
+        if((prov > np) || (prov<0)){ //Si presiona un numero que no corresponde a ningun proveedor
+            continue;
+        }
+        cout<<"Digite el Nombre"<<endl;
+        cin>>nombre;
+        cout<<"Digite el Codigo"<<endl;
+        cin>>codigo;
+        cout<<"Digite el Precio"<<endl;
+        cin>>precio;
+
+        //Buscamos el proveedor
+        while(aux){
+            if(i = prov){ // si lo encuentro
+                auxP = aux->getProducto();
+                while(true){
+                    if(auxP->sgte){
+                        auxP = auxP->sgte;
+                    }else{
+                        auxP->setSiguiente(crearProducto());
+                        auxP->getSiguiente()->setNombre(nombre);
+                        auxP->getSiguiente()->setPrecio(precio);
+                        auxP->getSiguiente()->setCodigo(codigo);
+                        auxP->getSiguiente()->setNITProveedor(aux->getNIT());
+                    }
+                }
+            }
+        }
+    }while(true);
 }

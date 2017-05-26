@@ -34,7 +34,7 @@ void MenuProductos(){
 				cin>>a;
                 break;
             case 2:
-                //Registrar Producto Nuevo
+                RegistrarNuevoProducto();
                 break;
             case 3:
                 //Salir;
@@ -46,7 +46,7 @@ void MenuProductos(){
 }
 
 void ImprimirMenuPrincipal(){
-	// system("clear");
+	system("clear");
 	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
 	cout<<"	||**********************************************************************************************************||"<<endl;
 	cout<<"	||***                                             Inventario                                             ***||"<<endl;
