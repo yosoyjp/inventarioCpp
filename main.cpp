@@ -31,10 +31,6 @@ void CargarTodosDatos(){
 
 int main(){
 	CargarTodosDatos();
-	cout<<listProveedor->getNombre()<<endl;
-	cout<<listProveedor->getSiguiente()->getProducto()->getNombre()<<endl;
-	
 	MenuPrincipal();
-	 
-	 return 0;
+	return 0;
 }

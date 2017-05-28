@@ -324,12 +324,12 @@ item * parsearRegItem(string r){
 
 item * loadDataItems(int codigoFactura){
     StringVector registros = loadDatas(nameFileItems);
-    item * it;
-    item * aux;
-
+    item * it = NULL;
+    item * aux = NULL; 
+    
     for(int i = 0; i < registros.size(); i++ ){
         if(parsearRegItem(registros[i])->getCodigoFactura() == codigoFactura){
-            if(it == NULL){ //Si esta vacia        
+            if(!it){ //Si esta vacia        
                 it = parsearRegItem(registros[i]);
             }else{
                 aux = it;
@@ -345,26 +345,24 @@ item * loadDataItems(int codigoFactura){
 
 cliente * getClientesByDNI(int dni){
     cliente * aux = listCliente;
-    cliente * ret = crearCliente();
-    while( aux->getSiguiente() ){
+    while( aux ){
         if(aux->getDNI() == dni){
-            ret->setSiguiente(aux);
+            return aux;
         }
         aux = aux->getSiguiente();
     }
-    return ret;
+    return NULL;
 }
 
 empleado * getEmpleadosByDNI(int dni){
     empleado * aux = listEmpleado;
-    empleado * ret = crearEmpleado();
-    while( aux->getSiguiente() ){
+    while( aux ){
         if(aux->getDNI() == dni){
-            ret->setSiguiente(aux);
+            return aux;
         }
         aux = aux->getSiguiente();
     }
-    return ret;
+    return NULL;
 }
 
 detalles * crearDetalle(){
@@ -389,8 +387,8 @@ detalles * parsearRegDetalles(string r){
 
 detalles * loadDataDetalles(int codigoFactura){
     StringVector registros = loadDatas(nameFileDetalles);
-    detalles * it;
-    detalles * aux;
+    detalles * it = NULL;
+    detalles * aux = NULL;
 
     for(int i = 0; i < registros.size(); i++ ){
         if(parsearRegDetalles(registros[i])->getCodigoFactura() == codigoFactura){
@@ -420,8 +418,10 @@ factura * parsearRegFactura(string r){
 
     f->setCodigo( atoi(rv[0].c_str() ) );
     f->setFormaDePago(rv[1]);
+    
     //Cargar item
     f->setItem( loadDataItems( f->getCodigo() ) );
+    
     //Cargar detalles
     f->setDetalles( loadDataDetalles( f->getCodigo()) );
     return f;
@@ -445,8 +445,11 @@ void loadDataFacturas(){
             listFactura = parsearRegFactura(registros[i]);
         }else{
             fac = listFactura;
-            while(fac->getSiguiente() != NULL){
+            cout<<fac<<endl;
+            while(fac->getSiguiente()){
+                
                 fac = fac->getSiguiente();
+                
             }
             fac->setSiguiente(parsearRegFactura(registros[i])); //Se añade al final de la lista
         }
@@ -690,6 +693,58 @@ void RegistrarNuevoEmpleado(){
             nuevoC->setDNI(dni);
             aux->setSiguiente(nuevoC);
             break;
+        }
+        aux = aux->getSiguiente();
+    }
+}
+
+persona * loadDataPersonaPorDNI(int dni){
+    persona * auxP = listPersona;
+    persona * p;
+    while(auxP){
+        if(dni == auxP->getDNI()){
+            p = crearPersona();
+            cout<<"**************************"<<endl;
+            p->setNombre(auxP->getNombre());
+            p->setApellido(auxP->getApellido());
+            p->setTelefono(auxP->getTelefono());
+            p->setDNI(auxP->getDNI());
+            return p;
+        }
+        auxP = auxP->getSiguiente();
+    }
+    return NULL;
+}
+
+void MostrarTodosFactura(){
+    factura * aux = listFactura;
+    item * auxItem;
+    detalles * auxDetalle;
+    while(aux){
+        auxItem = aux->getItem();
+        auxDetalle = aux->getDetalle();
+        if(auxDetalle && auxItem){
+            cout<<"*********************************************"<<endl;
+            cout<<"Codigo: "<<aux->getCodigo()<<endl;
+            cout<<"Fecha: "<<auxDetalle->getFecha()<<endl;
+            persona * auxP = loadDataPersonaPorDNI( auxDetalle->getCliente()->getDNI() );
+            if(auxP){
+                cout<<"   Cliente: "<<auxP->getNombre()<<" C.C "<<auxP->getDNI()<<endl;
+            }
+            auxP = loadDataPersonaPorDNI( auxDetalle->getEmpleado()->getDNI() );
+            if(auxP){
+                cout<<"   Empleado: "<<auxP->getNombre()<<" C.C "<<auxP->getDNI()<<endl;
+            }
+        }
+        if(auxItem && auxDetalle){
+            cout<<endl<<"    + + + + + + + + + + + + + + + + + + + + + + +"<<endl;
+            while(auxItem){
+                cout<<"     __________________________________________________"<<endl;
+                cout<<"     Producto: "<<auxItem->getCodigoProducto()<<endl;
+                //BUSCAR EL PRODUCTO
+                cout<<"     Cantidad: "<<auxItem->getCantidad()<<endl;
+                auxItem = auxItem->getSiguiente();
+            }
         }
         aux = aux->getSiguiente();
     }
