@@ -97,32 +97,6 @@ StringVector loadDatas(const char* nameFile){
     }
 }
 
-inventario * crearInventario(){
-    return (inventario *)malloc(sizeof(inventario));
-}
-
-inventario * parsearRegInventario(string r){
-    StringVector rv = Explode(r, '@');
-    inventario * i = crearInventario();
-    i->addDinero( atoi(rv[0].c_str() ) );
-    return i;
-}
-
-void loadDataInvetario(){
-
-    StringVector registros = loadDatas(nameFileInventario); //Cargamos las lineas del archivo
-    //Si no esta vacio;
-    
-    while(!registros.empty()){
-        
-        dataInventario = parsearRegInventario(registros[0]);
-        cout<<"*****************************HERE INVENTARIO**"<<endl;
-        return;
-    }
-    cout<<"*****************************************HERE INVENTARIO**"<<endl;
-    dataInventario = crearInventario(); //Si no habia datos, solo se crea el inventario con los datos iniciales.
-}
-
 persona * crearPersona(){
     persona *p = (persona *)malloc(sizeof(persona));
     p->setSiguiente(NULL);
@@ -966,8 +940,13 @@ void guardarClientes(){
     fstream archivo;
 	try{
 		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileClientes, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
 		while(aux){
-			archivo.open(nameFileClientes, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getDNI()<<endl;
             aux = aux->getSiguiente();
 		}
@@ -983,8 +962,13 @@ void guardarEmpleados(){
     fstream archivo;
 	try{
 		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileEmpleados, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
 		while(aux){
-			archivo.open(nameFileEmpleados, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getDNI()<<endl;
             aux = aux->getSiguiente();
 		}
@@ -1001,8 +985,13 @@ void guardarProducto(producto * p){
     fstream archivo;
 	try{
 		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileProductos, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
 		while(aux){
-			archivo.open(nameFileProductos, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getNombre()<<"@"<<aux->getCodigo()<<"@"<<aux->getPrecio()<<"@"<<aux->getNITProveedor()<<endl;
             aux = aux->getSiguiente();
 		}
@@ -1018,8 +1007,13 @@ void guardarProveedor(){
     fstream archivo;
 	try{
 		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileProveedores, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
 		while(aux){
-			archivo.open(nameFileProveedores, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getNombre()<<"@"<<aux->getNIT()<<"@"<<aux->getTelefono()<<endl;
             guardarProducto( aux->getProducto() );
             aux = aux->getSiguiente();
@@ -1037,8 +1031,13 @@ void guardarPersona(){
     fstream archivo;
 	try{
 		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFilePersonas, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
 		while(aux){
-			archivo.open(nameFilePersonas, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getNombre()<<"@"<< aux->getApellido()<<"@"<< aux->getDNI()<<"@"<< aux->getTelefono()<<endl;
             aux = aux->getSiguiente();
 		}
@@ -1047,6 +1046,10 @@ void guardarPersona(){
 		cout << "Error Nro: " << ve << endl;
 		system("PAUSE");
 	}
+}
+
+void guardarFactura(){
+    
 }
 
 void guardar(){

@@ -13,13 +13,11 @@ proveedor * listProveedor = NULL;
 empleado * listEmpleado = NULL;
 cliente * listCliente = NULL;
 factura * listFactura = NULL;
-inventario * dataInventario = NULL;
 
 #include "Funciones.h"
 
 void CargarTodosDatos(){
 	 cout<<"Cargando los datos"<<endl;
-	 loadDataInvetario();
 	 loadDataPersonas();
 	 loadDataProveedores();
 	 loadDataClientes();

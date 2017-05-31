@@ -1,4 +1,3 @@
-Nombre@Apellido@DNI@Telefono
 Johnny@Pacheco@1221968428@3152155394
 Ivan@Gordillo@123456789@3100000000
 Joel@Alvarez@98765432@3124678465

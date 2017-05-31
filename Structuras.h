@@ -363,20 +363,3 @@ typedef struct empleado{
         sgte = f;
     }
 }empleado;
-
-typedef struct inventario{
-    int Dinero;
-    inventario(){
-        Dinero = 0;
-    }
-    bool addDinero(int cash){
-        if(cash != (int)NULL && cash>0){
-            Dinero = Dinero+cash;
-            return true;
-        }
-        return false;
-    }
-    int getDinero(){
-        return Dinero;
-    }
-}inventario;

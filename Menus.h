@@ -227,24 +227,24 @@ void MenuFactura(){
 
 void ImprimirMenuPrincipal(){
 	system("clear");
-	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
-	cout<<"	||**********************************************************************************************************||"<<endl;
-	cout<<"	||***                                             Inventario                                             ***||"<<endl;
-	cout<<"	||***                                             __________                                             ***||"<<endl;
-	cout<<"	||***                                                                                                    ***||"<<endl;
-	cout<<"	||***                                                                                                    ***||"<<endl;
-	cout<<"	||***                      [1].  Productos                                                               ***||"<<endl;
-	cout<<"	||***                      [2].  Proveedor                                                               ***||"<<endl;
-	cout<<"	||***                      [3].  Facturas                                                                ***||"<<endl;
-	cout<<"	||***                      [4].  Clientes                                                                ***||"<<endl;
-	cout<<"	||***                      [5].  Empleados                                                               ***||"<<endl;
-	cout<<"	||***                      [7].  Guardar                                                                 ***||"<<endl;
-	cout<<"	||***                      [8].  Guardar y Salir                                                         ***||"<<endl;
-	cout<<"	||***                      [9]. Salir Sin Guardar                                                       ***||"<<endl;
-	cout<<"	||***                                                                                                    ***||"<<endl;
-	cout<<"	||***                                                               Digite El Numero De Su Opcion        ***||"<<endl;
-	cout<<"	||**********************************************************************************************************||"<<endl;
-	cout<<"	°____________________________________________________________________________________________________________°"<<endl;
+	cout<<"	 ___________________________________________________________________________ "<<endl;
+	cout<<"	||*************************************************************************||"<<endl;
+	cout<<"	||***                        Inventario                                 ***||"<<endl;
+	cout<<"	||***                        __________                                 ***||"<<endl;
+	cout<<"	||***                                                                   ***||"<<endl;
+	cout<<"	||***                                                                   ***||"<<endl;
+	cout<<"	||***          [1].  Productos                                          ***||"<<endl;
+	cout<<"	||***          [2].  Proveedor                                          ***||"<<endl;
+	cout<<"	||***          [3].  Facturas                                           ***||"<<endl;
+	cout<<"	||***          [4].  Clientes                                           ***||"<<endl;
+	cout<<"	||***          [5].  Empleados                                          ***||"<<endl;
+	cout<<"	||***          [7].  Guardar                                            ***||"<<endl;
+	cout<<"	||***          [8].  Guardar y Salir                                    ***||"<<endl;
+	cout<<"	||***          [9]. Salir Sin Guardar                                   ***||"<<endl;
+	cout<<"	||***                                                                   ***||"<<endl;
+	cout<<"	||***                              Digite El Numero De Su Opcion        ***||"<<endl;
+	cout<<"	||*************************************************************************||"<<endl;
+	cout<<"	 ___________________________________________________________________________ "<<endl;
 }
 
 void MenuPrincipal(){
@@ -281,6 +281,7 @@ void MenuPrincipal(){
 				break;
 			case 7:
 				//Guardar
+				guardar();
 				break;
 			case 8:
 				//Guardar y salir
