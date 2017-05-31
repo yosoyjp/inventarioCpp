@@ -969,13 +969,13 @@ void guardarClientes(){
 		while(aux){
 			archivo.open(nameFileClientes, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getDNI()<<endl;
-            aux = aux->getDNI();
+            aux = aux->getSiguiente();
 		}
+        archivo.close();
 	}catch(int ve){
 		cout << "Error Nro: " << ve << endl;
 		system("PAUSE");
 	}
-
 }
 
 void guardarEmpleados(){
@@ -986,13 +986,67 @@ void guardarEmpleados(){
 		while(aux){
 			archivo.open(nameFileEmpleados, ios::out| ios::app); //Se abre en modo de escritura al final.
 			archivo << aux->getDNI()<<endl;
-            aux = aux->getDNI();
+            aux = aux->getSiguiente();
 		}
+        archivo.close();
 	}catch(int ve){
 		cout << "Error Nro: " << ve << endl;
 		system("PAUSE");
 	}
 
+}
+
+void guardarProducto(producto * p){
+    producto * aux = p;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+		while(aux){
+			archivo.open(nameFileProductos, ios::out| ios::app); //Se abre en modo de escritura al final.
+			archivo << aux->getNombre()<<"@"<<aux->getCodigo()<<"@"<<aux->getPrecio()<<"@"<<aux->getNITProveedor()<<endl;
+            aux = aux->getSiguiente();
+		}
+        archivo.close();
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
+}
+
+void guardarProveedor(){
+    proveedor * aux = listProveedor;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+		while(aux){
+			archivo.open(nameFileProveedores, ios::out| ios::app); //Se abre en modo de escritura al final.
+			archivo << aux->getNombre()<<"@"<<aux->getNIT()<<"@"<<aux->getTelefono()<<endl;
+            guardarProducto( aux->getProducto() );
+            aux = aux->getSiguiente();
+		}
+        archivo.close();
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
+
+}
+
+void guardarPersona(){
+    persona * aux = listPersona;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+		while(aux){
+			archivo.open(nameFilePersonas, ios::out| ios::app); //Se abre en modo de escritura al final.
+			archivo << aux->getNombre()<<"@"<< aux->getApellido()<<"@"<< aux->getDNI()<<"@"<< aux->getTelefono()<<endl;
+            aux = aux->getSiguiente();
+		}
+        archivo.close();
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
 }
 
 void guardar(){
@@ -1018,34 +1072,18 @@ void guardar(){
 
     guardarClientes();
     guardarEmpleados();
+    guardarProveedor();
+    guardarPersona();
 }
 
 /* Ejemplos de registro en los archivos
-    Personas: {
-        Nombre@Apellido@DNI@Telefono
-    },
     Facturas:{
         Codigo@FormaDePago
     },
     Detalles:{
         CodigoFactura@Fecha@DNICliente@DNIEmpleado
     },
-    Empleados:{
-        DNI
-    },
-    Clientes:{
-        DNI
-    },
-    Proveedores:{
-        Nombre@NIT@Telefono
-    },
-    Productos:{
-        Nombre@Codigo@Precio@NITProveedor
-    }
     Item:{
         codigoFactura@CodigoProducto@Cantidad
     },
-    Inventario:{
-        Dinero
-    }
 */
