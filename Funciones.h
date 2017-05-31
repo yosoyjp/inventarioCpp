@@ -960,3 +960,92 @@ void RegistrarNuevaFactura(){
         }
     }
 }
+
+void guardarClientes(){
+    cliente * aux = listCliente;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+		while(aux){
+			archivo.open(nameFileClientes, ios::out| ios::app); //Se abre en modo de escritura al final.
+			archivo << aux->getDNI()<<endl;
+            aux = aux->getDNI();
+		}
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
+
+}
+
+void guardarEmpleados(){
+    empleado * aux = listEmpleado;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+		while(aux){
+			archivo.open(nameFileEmpleados, ios::out| ios::app); //Se abre en modo de escritura al final.
+			archivo << aux->getDNI()<<endl;
+            aux = aux->getDNI();
+		}
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
+
+}
+
+void guardar(){
+    fstream archivo;
+
+	//Limpiamos los registros
+	archivo.open(nameFileClientes , ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+	archivo.open(nameFileDetalles, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+    archivo.open(nameFileEmpleados, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+    archivo.open(nameFileFacturas, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+    archivo.open(nameFileItems, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+    archivo.open(nameFilePersonas, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+    archivo.open(nameFileProductos, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+    archivo.open(nameFileProveedores, ios::out | ios::trunc);//donde out abre al archivo como de salida y trunc lo limpia.
+	archivo.close();
+
+    guardarClientes();
+    guardarEmpleados();
+}
+
+/* Ejemplos de registro en los archivos
+    Personas: {
+        Nombre@Apellido@DNI@Telefono
+    },
+    Facturas:{
+        Codigo@FormaDePago
+    },
+    Detalles:{
+        CodigoFactura@Fecha@DNICliente@DNIEmpleado
+    },
+    Empleados:{
+        DNI
+    },
+    Clientes:{
+        DNI
+    },
+    Proveedores:{
+        Nombre@NIT@Telefono
+    },
+    Productos:{
+        Nombre@Codigo@Precio@NITProveedor
+    }
+    Item:{
+        codigoFactura@CodigoProducto@Cantidad
+    },
+    Inventario:{
+        Dinero
+    }
+*/
