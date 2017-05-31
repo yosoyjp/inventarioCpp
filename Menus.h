@@ -216,7 +216,7 @@ void MenuFactura(){
 				cin>>a;
                 break;
             case 2:
-                // RegistrarNuevaFactura();
+                RegistrarNuevaFactura();
                 break;
             case 3:
                 //Salir;

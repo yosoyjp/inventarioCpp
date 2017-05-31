@@ -10,7 +10,7 @@ const char* nameFileProveedores = "./Data/proveedores.txt";
 const char* nameFileItems = "./Data/items.txt";
 const char* nameFileProductos = "./Data/productos.txt";
 const char* nameFileInventario = "./Data/inventario.txt";
-
+typedef vector<producto * > ProductosVector;
 /* Ejemplos de registro en los archivos
     Personas: {
         Nombre@Apellido@DNI@Telefono
@@ -716,10 +716,27 @@ persona * loadDataPersonaPorDNI(int dni){
     return NULL;
 }
 
+producto * loadProductoPorCodigo(int codigo){
+    proveedor * Proveedores  = listProveedor;
+    producto * auxPro;
+    while(Proveedores){
+        auxPro = Proveedores->getProducto();
+        while(auxPro){
+            if(auxPro->getCodigo() == codigo){
+                return auxPro;
+            }
+            auxPro = auxPro->getSiguiente();
+        }
+        Proveedores = Proveedores->getSiguiente();
+    }
+    return NULL;
+}
+
 void MostrarTodosFactura(){
     factura * aux = listFactura;
     item * auxItem;
     detalles * auxDetalle;
+    producto * auxProducto;
     while(aux){
         auxItem = aux->getItem();
         auxDetalle = aux->getDetalle();
@@ -739,13 +756,207 @@ void MostrarTodosFactura(){
         if(auxItem && auxDetalle){
             cout<<endl<<"    + + + + + + + + + + + + + + + + + + + + + + +"<<endl;
             while(auxItem){
-                cout<<"     __________________________________________________"<<endl;
-                cout<<"     Producto: "<<auxItem->getCodigoProducto()<<endl;
-                //BUSCAR EL PRODUCTO
-                cout<<"     Cantidad: "<<auxItem->getCantidad()<<endl;
-                auxItem = auxItem->getSiguiente();
+                auxProducto = loadProductoPorCodigo(auxItem->getCodigoProducto());
+                if(auxProducto){
+                    cout<<"     __________________________________________________"<<endl;
+                    cout<<"     Producto: "<<auxProducto->getNombre()<<endl;
+                    //BUSCAR EL PRODUCTO
+                    cout<<"     Cantidad: "<<auxItem->getCantidad()<<endl;
+                    auxItem = auxItem->getSiguiente();
+                }
             }
         }
         aux = aux->getSiguiente();
+    }
+}
+
+bool ExisteFacturaCodigo(int codigo){
+    factura * aux = listFactura;
+    while(aux){
+        if(aux->getCodigo() == codigo){
+            return true;
+        }
+        aux = aux->getSiguiente();
+    }
+    return false;
+}
+
+void imprimirTodosProductos(){
+    proveedor * aux = listProveedor;
+    producto * auxP = NULL;
+    int i = 0;
+    while(aux){
+        auxP = aux->getProducto();
+        while(auxP){
+            cout<<"   "<<i<<". "<<auxP->getNombre()<<endl;
+            auxP = auxP->getSiguiente();
+            i++;
+        }
+        aux = aux->getSiguiente();
+    }
+}
+
+producto *seleccionarProducto(){
+    proveedor * aux = listProveedor;
+    producto * auxP = NULL;
+    ProductosVector ProductosV;
+    int i = 0;
+    int pos;
+    while(aux){
+        auxP = aux->getProducto();
+        while(auxP){
+            cout<<"   "<<i<<". "<<auxP->getNombre()<<endl;
+            ProductosV.push_back(auxP);
+            i++;
+            auxP = auxP->getSiguiente();
+        }
+        aux = aux->getSiguiente();
+    }
+    
+    while(true){
+        cout<<endl<<"Seleccione el producto"<<endl;
+        cin>>pos;
+        if(cin.fail() || i<0){
+            cin.clear();
+            cin.ignore(256, '\n');
+        }else{
+            return ProductosV.at(pos);
+        }
+    }
+}
+
+int DevuelveCodigo(int cont){
+    proveedor * aux = listProveedor;
+    producto * auxP = NULL;
+    int i = 0;
+    while(aux){
+        auxP = aux->getProducto();
+        while(auxP){
+            if(i == cont){
+                return auxP->getCodigo();
+            }
+            auxP = auxP->getSiguiente();
+            i++;
+        }
+        aux = aux->getSiguiente();
+    }
+    return (int)NULL;
+}
+
+void RegistrarItemEnFactura(factura * Fac){
+    bool sw = true;
+    producto * ProductoElegido;
+    int cantidad = 0;
+    item * nuevo = NULL;
+    item * aux=NULL;
+    int op = 0;
+    
+    do{
+        system("clear");
+        ProductoElegido = seleccionarProducto();
+        
+        if(ProductoElegido){
+            cout<<"Digite la cantidad"<<endl;
+            cin>>cantidad;
+
+            if(!cantidad >0){
+                cout<<"La cantidad debe ser mayor de 0"<<endl;
+                system("pause");
+                continue;
+            }
+
+            nuevo = crearItem();
+            nuevo->setCantidad(cantidad);
+            nuevo->setCodigoProducto(ProductoElegido->getCodigo());
+            if(Fac->getItem() == NULL){
+                Fac->setItem(nuevo);
+            }else{
+                aux = Fac->getItem();
+                while(aux){
+                    if(!aux->getSiguiente()){
+                        aux->setSiguiente(nuevo);
+                        break;
+                    }
+                    aux = aux->getSiguiente();
+                }
+            }
+            cout<<"Quiere ingresar un nuevo item - (1,0)"<<endl;
+            cin>>op;
+            if(op == 0){
+                return;
+            }
+        }
+    }while(sw);
+}
+
+detalles * nuevoDetalles(){
+    string fecha;
+    cliente * auxCli = listCliente;
+    empleado * auxEmple = listEmpleado;
+
+    int dniCliente = 0;
+    int dniEmpleado = 0;
+    detalles * detal = crearDetalle();
+
+    cout<<"Digite la fecha"<<endl;
+    cin>>fecha;
+    cout<<"Digite la cedula del cliente"<<endl;
+    cin>>dniCliente;
+    cout<<"Digite la cedula del empleado"<<endl;
+    cin>>dniEmpleado;
+
+    detal->setFecha(fecha);
+
+    while(auxCli){
+        if(dniCliente == auxCli->getDNI()){
+            detal->setCliente(auxCli);
+            break;
+        }
+        auxCli = auxCli->getSiguiente();
+    }
+
+    while(auxEmple){
+        if(dniEmpleado == auxEmple->getDNI()){
+            detal->setEmpleado(auxEmple);
+            break;
+        }
+        auxEmple = auxEmple->getSiguiente();
+    }
+
+    return detal;
+}
+
+void RegistrarNuevaFactura(){
+    int codigo = 0;
+    int op = 0;
+    factura * nuevaFactura;
+    factura * aux = listFactura;
+    while(true){
+        cout<<"Digite el codigo"<<endl;
+        cin>>codigo;
+        if(cin.fail()){ //Si los datos son incorrectos
+            cin.ignore(256, '\n');
+            cin.clear();
+            continue;
+        }
+        if(ExisteFacturaCodigo(codigo)){ //Si el codigo ya esta en uso
+            cout<<"Este codigo ya esta en uso" <<endl;
+            // system("pause");
+            continue;
+        }
+        nuevaFactura = crearFactura();
+        nuevaFactura->setCodigo(codigo);
+        nuevaFactura->setItem(NULL);
+        RegistrarItemEnFactura(nuevaFactura);
+        nuevaFactura->setDetalles(nuevoDetalles());
+        nuevaFactura->getDetalle()->setCodigoFactura(codigo);
+        
+        while(aux){
+            if(aux->getSiguiente() == NULL){
+                aux->setSiguiente(nuevaFactura);
+                return;
+            }
+            aux = aux->getSiguiente();
+        }
     }
 }
