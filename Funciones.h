@@ -533,7 +533,7 @@ void RegistrarNuevoProducto(){
     producto * auxP;
 
     do{
-        // system("clear");
+        system("clear");
         prov = seleccionarProveedor();
         
         
@@ -554,7 +554,6 @@ void RegistrarNuevoProducto(){
                 if(auxP->getSiguiente()){
                     auxP = auxP->getSiguiente();
                 }else{
-                    cout<<"aqui toy"<<endl;
                     auxP->setSiguiente(crearProducto());
                     auxP->getSiguiente()->setNombre(nombre);
                     auxP->getSiguiente()->setPrecio(precio);
