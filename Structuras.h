@@ -304,6 +304,9 @@ typedef struct factura{
         }
         return false;
     }
+    string getFormaDePago(){
+        return formaPago;
+    }
     int getCodigo(){
         return Codigo;
     }

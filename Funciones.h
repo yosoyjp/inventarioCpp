@@ -492,35 +492,51 @@ int MostrarTodosProveedores(){
         cout<<"  "<<i<<".  Proveedor: "<<aux->getNombre()<<endl;
         aux = aux->getSiguiente();
         cout<<endl;
-        i++;
+        if(aux){
+            i++;
+        }
     }
     return i;
 }
 
+proveedor *  seleccionarProveedor(){
+    proveedor * aux = listProveedor;
+    vector<proveedor* > Proveedores;
+    int i = 0;
+    int pos = 0;
+    while(aux){
+        cout<<"____________________________________"<<endl;
+        cout<<"  "<<i<<". "<<aux->getNombre()<<endl;
+        Proveedores.push_back(aux);
+        i++;
+        aux = aux->getSiguiente();
+    }
+    while(true){
+        cout<<endl<<"Seleccione el proveedor"<<endl;
+        cin>>pos;
+        if(cin.fail() || i<0){
+            cin.clear();
+            cin.ignore(256, '\n');
+        }else{
+            return Proveedores.at(pos);
+        }
+    }
+
+}
+
 void RegistrarNuevoProducto(){
-    int prov = 0;
-    int np = 0;
     string nombre;
     int codigo = 0;
     int precio =0;
     int i = 0;
-    proveedor * aux = listProveedor;
+    proveedor * prov;
     producto * auxP;
-    bool sw = false;
-    do{
-        system("clear");
-        cout<<"Digite el numero del proveedor"<<endl;
-        np = MostrarTodosProveedores();
-        cin>>prov;
 
-        if(cin.fail()){ //Si el dato no es valido
-            cin.ignore(256, '\n');
-            cin.clear();
-            continue;
-        }
-        if((prov > np) || (prov<0)){ //Si presiona un numero que no corresponde a ningun proveedor
-            continue;
-        }
+    do{
+        // system("clear");
+        prov = seleccionarProveedor();
+        
+        
         cout<<"Digite el Nombre"<<endl;
         cin>>nombre;
         cin.ignore(256, '\n');
@@ -531,28 +547,32 @@ void RegistrarNuevoProducto(){
         cin>>precio;
         cin.ignore(256, '\n');
 
-        //Buscamos el proveedor
-        while(aux && sw==false){
-            if(i == prov){ // si lo encuentro
-                auxP = aux->getProducto();
-                while(auxP && sw==false){
-                    if(auxP->sgte){
-                        auxP = auxP->sgte;
-                    }else{
-                        auxP->setSiguiente(crearProducto());
-                        auxP->getSiguiente()->setNombre(nombre);
-                        auxP->getSiguiente()->setPrecio(precio);
-                        auxP->getSiguiente()->setCodigo(codigo);
-                        auxP->getSiguiente()->setNITProveedor(aux->getNIT());
-                        sw = true;
-                        break;
-                    }
+        
+        auxP = prov->getProducto();
+        if(auxP){
+            while(auxP){
+                if(auxP->getSiguiente()){
+                    auxP = auxP->getSiguiente();
+                }else{
+                    cout<<"aqui toy"<<endl;
+                    auxP->setSiguiente(crearProducto());
+                    auxP->getSiguiente()->setNombre(nombre);
+                    auxP->getSiguiente()->setPrecio(precio);
+                    auxP->getSiguiente()->setCodigo(codigo);
+                    auxP->getSiguiente()->setNITProveedor(prov->getNIT());
+                    return;
                 }
             }
-            i++;
-            aux = aux->getSiguiente();
+        }else{
+            prov->setProducto(crearProducto());
+            prov->getProducto()->setNombre(nombre);
+            prov->getProducto()->setPrecio(precio);
+            prov->getProducto()->setCodigo(codigo);
+            prov->getProducto()->setNITProveedor(prov->getNIT());
+            return;
         }
-    }while(true && sw==false);
+        
+    }while(true);
 }
 
 void RegistrarNuevoProveedor(){
@@ -790,7 +810,7 @@ producto *seleccionarProducto(){
     while(true){
         cout<<endl<<"Seleccione el producto"<<endl;
         cin>>pos;
-        if(cin.fail() || i<0){
+        if(cin.fail() || pos<0){
             cin.clear();
             cin.ignore(256, '\n');
         }else{
@@ -906,6 +926,7 @@ void RegistrarNuevaFactura(){
     factura * nuevaFactura;
     factura * aux = listFactura;
     while(true){
+        system("clear");
         cout<<"Digite el codigo"<<endl;
         cin>>codigo;
         if(cin.fail()){ //Si los datos son incorrectos
@@ -991,6 +1012,9 @@ void guardarProducto(producto * p){
             system("pause");
             return;
         }
+        if(!aux){
+            return;
+        }
 		while(aux){
 			archivo << aux->getNombre()<<"@"<<aux->getCodigo()<<"@"<<aux->getPrecio()<<"@"<<aux->getNITProveedor()<<endl;
             aux = aux->getSiguiente();
@@ -1048,8 +1072,71 @@ void guardarPersona(){
 	}
 }
 
+void guardarItem(item * it){
+    item * aux = it;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileItems, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
+		while(aux){
+			archivo << aux->getCodigoFactura()<<"@"<< aux->getCodigoProducto()<<"@"<<aux->getCantidad()<<endl;
+            aux = aux->getSiguiente();
+		}
+        archivo.close();
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
+}
+
+void guardarDetalle(detalles * det){
+    detalles * aux = det;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileDetalles, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
+		if(aux){
+			archivo << aux->getCodigoFactura()<<"@"<< aux->getFecha()<<"@"<<aux->getCliente()->getDNI()<<"@"<<aux->getEmpleado()->getDNI()<<endl;
+		}
+        archivo.close();
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
+}
+
 void guardarFactura(){
-    
+    factura * aux = listFactura;
+    fstream archivo;
+	try{
+		//si el arbol no esta vacio, entonces recorrelo.
+        archivo.open(nameFileFacturas, ios::out| ios::app); //Se abre en modo de escritura al final.
+        if(!archivo.is_open()){
+            cout<<"Error guardando archivos"<<endl;
+            system("pause");
+            return;
+        }
+		while(aux){
+			archivo << aux->getCodigo()<<"@"<< aux->getFormaDePago()<<endl;
+            guardarItem( aux->getItem() );
+            guardarDetalle( aux->getDetalle() );
+            aux = aux->getSiguiente();
+		}
+        archivo.close();
+	}catch(int ve){
+		cout << "Error Nro: " << ve << endl;
+		system("PAUSE");
+	}
 }
 
 void guardar(){
@@ -1078,15 +1165,3 @@ void guardar(){
     guardarProveedor();
     guardarPersona();
 }
-
-/* Ejemplos de registro en los archivos
-    Facturas:{
-        Codigo@FormaDePago
-    },
-    Detalles:{
-        CodigoFactura@Fecha@DNICliente@DNIEmpleado
-    },
-    Item:{
-        codigoFactura@CodigoProducto@Cantidad
-    },
-*/
