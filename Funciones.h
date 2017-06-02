@@ -32,12 +32,9 @@ typedef vector<producto * > ProductosVector;
     },
     Productos:{
         Nombre@Codigo@Precio@NITProveedor
-    }
+    },
     Item:{
         codigoFactura@CodigoProducto@Cantidad
-    },
-    Inventario:{
-        Dinero
     }
 */
 
@@ -694,6 +691,9 @@ void RegistrarNuevoEmpleado(){
 persona * loadDataPersonaPorDNI(int dni){
     persona * auxP = listPersona;
     persona * p;
+    if(!listPersona){
+        return NULL;
+    }
     while(auxP){
         if(dni == auxP->getDNI()){
             p = crearPersona();
@@ -899,6 +899,8 @@ detalles * nuevoDetalles(){
     cin>>dniEmpleado;
 
     detal->setFecha(fecha);
+    detal->getCliente(NULL);
+    detal->getEmpleado(NULL);
 
     while(auxCli){
         if(dniCliente == auxCli->getDNI()){
@@ -916,6 +918,10 @@ detalles * nuevoDetalles(){
         auxEmple = auxEmple->getSiguiente();
     }
 
+    if(detal->getEmpleado() == NULL || !detal->getCliente() == NULL ){
+        return NULL;
+    }
+
     return detal;
 }
 
@@ -924,8 +930,9 @@ void RegistrarNuevaFactura(){
     int op = 0;
     factura * nuevaFactura;
     factura * aux = listFactura;
+    detalles * tmpDetalle;
     while(true){
-        system("clear");
+        // system("clear");
         cout<<"Digite el codigo"<<endl;
         cin>>codigo;
         if(cin.fail()){ //Si los datos son incorrectos
@@ -942,16 +949,27 @@ void RegistrarNuevaFactura(){
         nuevaFactura->setCodigo(codigo);
         nuevaFactura->setItem(NULL);
         RegistrarItemEnFactura(nuevaFactura);
-        nuevaFactura->setDetalles(nuevoDetalles());
+        tmpDetalle = nuevoDetalles();
+        if(!tmpDetalle){
+            cout<<"Campos incorrectos"<<endl;
+            return;
+        }
+        nuevaFactura->setDetalles(tmpDetalle);
         nuevaFactura->getDetalle()->setCodigoFactura(codigo);
         
-        while(aux){
-            if(aux->getSiguiente() == NULL){
-                aux->setSiguiente(nuevaFactura);
-                return;
+        if(listFactura){ //Si ya hay facturas
+            while(aux){
+                if(aux->getSiguiente() == NULL){
+                    aux->setSiguiente(nuevaFactura);
+                    return;
+                }
+                aux = aux->getSiguiente();
             }
-            aux = aux->getSiguiente();
+        }else{
+            listFactura = nuevaFactura;
+            return;
         }
+        
     }
 }
 

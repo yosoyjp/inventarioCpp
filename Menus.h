@@ -285,6 +285,9 @@ void MenuPrincipal(){
 				break;
 			case 8:
 				//Guardar y salir
+				guardar();
+				system("clear");
+				exit(0);
 				break;
 			case 9:
 				//Salir sin guardar
