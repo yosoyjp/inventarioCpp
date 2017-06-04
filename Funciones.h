@@ -899,8 +899,8 @@ detalles * nuevoDetalles(){
     cin>>dniEmpleado;
 
     detal->setFecha(fecha);
-    detal->getCliente(NULL);
-    detal->getEmpleado(NULL);
+    detal->setCliente(NULL);
+    detal->setEmpleado(NULL);
 
     while(auxCli){
         if(dniCliente == auxCli->getDNI()){
